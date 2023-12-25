@@ -25,7 +25,6 @@ class NetworkStreamersRepository(
                 id = 0,
                 avatar = it.avatar,
                 isCommunityStreamer = it.isCommunityStreamer,
-                isLive = it.isLive,
                 twitchUrl = it.twitchUrl ?: "",
                 url = it.url,
                 username = it.username

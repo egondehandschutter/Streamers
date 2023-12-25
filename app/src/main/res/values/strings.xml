@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Streamers</string>
+    <string name ="filter_title">Kies Filter Opties</string>
+    <string name="streamer_detail_title">Visitekaart</string>
+    <string name="back_button">Back</string>
+    <string name="streamer">Streamer</string>
 </resources>

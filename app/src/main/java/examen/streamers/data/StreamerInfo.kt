@@ -9,7 +9,6 @@ data class StreamerInfo(
     val id : Int,
     val avatar: String,
     val isCommunityStreamer: Boolean,
-    val isLive: Boolean,
     val twitchUrl: String,
     val url: String,
     val username: String
