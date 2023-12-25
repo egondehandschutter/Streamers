@@ -22,6 +22,7 @@ class NetworkStreamersRepository(
         val result = getStreamers().streamers
         val streamersInfo = result.map {
             StreamerInfo(
+                id = 0,
                 avatar = it.avatar,
                 isCommunityStreamer = it.isCommunityStreamer,
                 isLive = it.isLive,

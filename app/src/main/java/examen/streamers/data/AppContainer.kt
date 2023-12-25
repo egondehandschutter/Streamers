@@ -5,9 +5,12 @@ import examen.streamers.network.StreamerApiService
 import kotlinx.serialization.json.Json
 import retrofit2.Retrofit
 import okhttp3.MediaType.Companion.toMediaType
+import android.content.Context
+
 
 interface AppContainer {
-    val streamerRepository: StreamersRepository
+    val streamersRepository: StreamersRepository
+    val streamerInfoRepository: StreamerInfoRepository
 }
 
 /**
@@ -15,7 +18,7 @@ interface AppContainer {
  *
  * Variables are initialized lazily and the same instance is shared across the whole app.
  */
-class DefaultAppContainer : AppContainer {
+class DefaultAppContainer(private val context: Context) : AppContainer {
     private val baseUrl = "https://api.chess.com/pub/"
 
     /**
@@ -36,7 +39,11 @@ class DefaultAppContainer : AppContainer {
     /**
      * DI implementation for Mars photos repository
      */
-    override val streamerRepository by lazy {
+    override val streamersRepository by lazy {
         NetworkStreamersRepository(retrofitService)
+    }
+
+    override val streamerInfoRepository: StreamerInfoRepository by lazy {
+        OfflineStreamerInfoRepository(StreamersDatabase.getDatabase(context).streamerInfoDao())
     }
 }

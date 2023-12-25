@@ -29,17 +29,16 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting()
+                    StreamersApp()
                 }
             }
         }
     }
 }
-
-@Composable
+/*@Composable
 fun Greeting(modifier: Modifier = Modifier) {
     val container: AppContainer = DefaultAppContainer()
-    val streamersRepository: StreamersRepository = container.streamerRepository
+    val streamersRepository: StreamersRepository = container.streamersRepository
     val allStreamersInfo: List<StreamerInfo>
     runBlocking {
         allStreamersInfo = streamersRepository.getStreamersInfo()
@@ -52,7 +51,7 @@ fun Greeting(modifier: Modifier = Modifier) {
             )
         }}
 }
-
+*/
 
 
 
@@ -60,6 +59,6 @@ fun Greeting(modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     StreamersTheme {
-        Greeting()
+        StreamersApp()
         }
     }

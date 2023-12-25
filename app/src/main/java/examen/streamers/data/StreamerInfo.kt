@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "streamers")
 data class StreamerInfo(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    val id : Int,
     val avatar: String,
     val isCommunityStreamer: Boolean,
     val isLive: Boolean,
