@@ -7,35 +7,37 @@ interface StreamerInfoRepository {
     fun getAllStreamersStream(): Flow<List<StreamerInfo>>
 
     /**
-     * Retrieve a doctor from the given data source that matches with the [id].
+     * Retrieve a streamer from the given data source that matches with the [id].
      */
-    fun getStreamerStream(id: String): Flow<StreamerInfo?>
+    //fun getStreamerStream(id: String): Flow<StreamerInfo?>
+    suspend fun getStreamer(id: String): StreamerInfo?
 
     /**
-     * Insert doctor in the data source
+     * Insert streamer in the data source
      */
-    suspend fun insertStreamer(doctor: StreamerInfo)
+    suspend fun insertStreamer(streamer: StreamerInfo)
 
     /**
-     * Delete doctor from the data source
+     * Delete streamer from the data source
      */
-    suspend fun deleteStreamer(doctor: StreamerInfo)
+    suspend fun deleteStreamer(streamer: StreamerInfo)
 
     /**
-     * Update doctor in the data source
+     * Update streamer in the data source
      */
-    suspend fun updateStreamer(doctor: StreamerInfo)
+    suspend fun updateStreamer(streamer: StreamerInfo)
 }
 
 
 class OfflineStreamerInfoRepository(private val streamerInfoDao: StreamerInfoDao) : StreamerInfoRepository {
-    override fun getAllStreamersStream(): Flow<List<StreamerInfo>> = streamerInfoDao.getAllDoctors()
+    override fun getAllStreamersStream(): Flow<List<StreamerInfo>> = streamerInfoDao.getAllStreamers()
 
-    override fun getStreamerStream(id: String): Flow<StreamerInfo?> = streamerInfoDao.getDoctor(id)
+    //override fun getStreamerStream(id: String): Flow<StreamerInfo?> = streamerInfoDao.getStreamer(id)
+    override suspend fun getStreamer(id: String): StreamerInfo? = streamerInfoDao.getStreamer(id)
 
-    override suspend fun insertStreamer(doctor: StreamerInfo) = streamerInfoDao.insert(doctor)
+    override suspend fun insertStreamer(streamer: StreamerInfo) = streamerInfoDao.insert(streamer)
 
-    override suspend fun deleteStreamer(doctor: StreamerInfo) = streamerInfoDao.delete(doctor)
+    override suspend fun deleteStreamer(streamer: StreamerInfo) = streamerInfoDao.delete(streamer)
 
-    override suspend fun updateStreamer(doctor: StreamerInfo) = streamerInfoDao.update(doctor)
+    override suspend fun updateStreamer(streamer: StreamerInfo) = streamerInfoDao.update(streamer)
 }

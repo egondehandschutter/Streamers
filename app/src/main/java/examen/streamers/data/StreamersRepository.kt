@@ -15,14 +15,14 @@ class NetworkStreamersRepository(
     private val apiEndpoint = "streamers"
 
 
-    /** Fetches doctor locations from DoctorApi according to apiEndpoint */
+    /** Fetches streamer locations from StreamerApi according to apiEndpoint */
     override suspend fun getStreamers(): Streamers = streamerApiService.getStreamers(apiEndpoint)
 
     override suspend fun getStreamersInfo(): List<StreamerInfo> {
         val result = getStreamers().streamers
         val streamersInfo = result.map {
             StreamerInfo(
-                id = 0,
+                //id = 0,
                 avatar = it.avatar,
                 isCommunityStreamer = it.isCommunityStreamer,
                 twitchUrl = it.twitchUrl ?: "",

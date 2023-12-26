@@ -24,8 +24,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import examen.streamers.R
+import examen.streamers.StreamersTopAppBar
 import examen.streamers.data.StreamerInfo
 import examen.streamers.navigation.NavigationDestination
 
@@ -39,21 +41,31 @@ object HomeDestination : NavigationDestination {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
-
+    navigateToDetails: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: StreamersViewModel
 ) {
     val streamerUiState by viewModel.streamerUiState.collectAsState()
 
+    val appUiState by viewModel.appUiState.collectAsState()
+
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            StreamersTopAppBar(
+                title = stringResource(HomeDestination.titleRes),
+                canNavigateBack = false,
+                scrollBehavior = scrollBehavior
+            )
+        },
 
     ) { innerPadding ->
 
         HomeBody(
             streamerList = streamerUiState.streamerList,
+            onItemClick = navigateToDetails,
             modifier = modifier
                 .padding(innerPadding)
                 .fillMaxSize()
@@ -65,26 +77,36 @@ fun HomeScreen(
 }
 
 @Composable
-fun HomeBody(streamerList: List<StreamerInfo>, modifier: Modifier) {
+fun HomeBody(
+    streamerList: List<StreamerInfo>,
+    onItemClick: (String) -> Unit,
+    modifier: Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
         StreamerList(
             streamerList = streamerList,
+            onItemClick = { onItemClick(it.username) },
             modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
         )
     }
     }
 
 @Composable
-fun StreamerList(streamerList: List<StreamerInfo>, modifier: Modifier) {
+fun StreamerList(
+    streamerList: List<StreamerInfo>,
+    onItemClick: (StreamerInfo) -> Unit,
+    modifier: Modifier
+) {
     LazyColumn(modifier = modifier) {
 
-        items(items = streamerList, key = { it.id }) { streamer ->
+        items(items = streamerList, key = { it.username }) { streamer ->
             StreamerItem(streamer = streamer,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
+                    .clickable { onItemClick(streamer) }
                     )
         }
     }

@@ -12,22 +12,36 @@ import examen.streamers.data.StreamerInfoRepository
 import examen.streamers.data.StreamersRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
 data class StreamerUiState(val streamerList: List<StreamerInfo> = listOf())
 
+data class AppUiState(
+    val selectedStreamer: StreamerInfo? = StreamerInfo(
+        username = "",
+        avatar = "",
+        isCommunityStreamer = false,
+        twitchUrl = "",
+        url = ""
+    )
+)
+
 class StreamersViewModel(
     val streamerInfoRepository: StreamerInfoRepository,
     val streamersRepository: StreamersRepository
 ) : ViewModel() {
+
     /**
-     * Holds ui state. The list of doctors is retrieved from [StreamerInfoRepository] and mapped to
+     * Holds ui state. The list of streamers is retrieved from [StreamerInfoRepository] and mapped to
      * [StreamerUiState]
      */
     val streamerUiState: StateFlow<StreamerUiState> =
@@ -37,6 +51,9 @@ class StreamersViewModel(
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
                 initialValue = StreamerUiState()
             )
+
+    private val _uiState = MutableStateFlow(AppUiState())
+    val appUiState: StateFlow<AppUiState> = _uiState.asStateFlow()
 
     private suspend fun getAllStreamers() = coroutineScope {
         val streamers = async {
@@ -49,6 +66,15 @@ class StreamersViewModel(
             }
         }
         streamers.await().forEach { streamerInfoRepository.insertStreamer(it) }
+    }
+
+    fun selectStreamer(id: String) = viewModelScope.launch {
+        val streamer = async {
+            streamerInfoRepository.getStreamer(id)
+        }
+        _uiState.update { currentState ->
+            currentState.copy(selectedStreamer = streamer.await())
+        }
     }
 
     init {

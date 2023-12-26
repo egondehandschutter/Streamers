@@ -11,19 +11,20 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface StreamerInfoDao {
     @Query("SELECT * from streamers")
-    fun getAllDoctors(): Flow<List<StreamerInfo>>
+    fun getAllStreamers(): Flow<List<StreamerInfo>>
 
-    @Query("SELECT * from streamers WHERE id = :id")
-    fun getDoctor(id: String): Flow<StreamerInfo>
+    @Query("SELECT * from streamers WHERE username = :username")
+    //fun getStreamer(username: String): Flow<StreamerInfo>
+    suspend fun getStreamer(username: String): StreamerInfo?
 
     // Specify the conflict strategy as IGNORE, when the user tries to add an
     // existing Item into the database Room ignores the conflict.
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(doctorInfo: StreamerInfo)
+    suspend fun insert(streamerInfo: StreamerInfo)
 
     @Update
-    suspend fun update(doctorInfo: StreamerInfo)
+    suspend fun update(streamerInfo: StreamerInfo)
 
     @Delete
-    suspend fun delete(doctorInfo: StreamerInfo)
+    suspend fun delete(streamerInfo: StreamerInfo)
 }
