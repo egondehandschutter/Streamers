@@ -58,7 +58,7 @@ fun StreamersApp(navController: NavHostController = rememberNavController()) {
             }
         )}
 
-@ExperimentalMaterial3Api
+/*@ExperimentalMaterial3Api
 @Composable
 fun SearchBar(
     query: String,
@@ -73,5 +73,5 @@ fun SearchBar(
     trailingIcon: @Composable (() -> Unit)? = null,
     content: List<StreamerInfo>,
 ) {
-}
+}*/
 

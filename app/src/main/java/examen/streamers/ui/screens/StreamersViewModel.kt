@@ -28,7 +28,7 @@ import java.io.IOException
 data class StreamerUiState(val streamerList: List<StreamerInfo> = listOf())
 
 data class AppUiState(
-    val selectedStreamer: StreamerInfo? = StreamerInfo(
+    val selectedStreamer: StreamerInfo = StreamerInfo(
         username = "",
         avatar = "",
         isCommunityStreamer = false,

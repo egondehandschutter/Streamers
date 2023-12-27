@@ -15,7 +15,7 @@ interface StreamerInfoDao {
 
     @Query("SELECT * from streamers WHERE username = :username")
     //fun getStreamer(username: String): Flow<StreamerInfo>
-    suspend fun getStreamer(username: String): StreamerInfo?
+    suspend fun getStreamer(username: String): StreamerInfo
 
     // Specify the conflict strategy as IGNORE, when the user tries to add an
     // existing Item into the database Room ignores the conflict.

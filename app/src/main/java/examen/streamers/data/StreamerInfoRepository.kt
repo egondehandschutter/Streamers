@@ -10,7 +10,7 @@ interface StreamerInfoRepository {
      * Retrieve a streamer from the given data source that matches with the [id].
      */
     //fun getStreamerStream(id: String): Flow<StreamerInfo?>
-    suspend fun getStreamer(id: String): StreamerInfo?
+    suspend fun getStreamer(id: String): StreamerInfo
 
     /**
      * Insert streamer in the data source
@@ -33,7 +33,7 @@ class OfflineStreamerInfoRepository(private val streamerInfoDao: StreamerInfoDao
     override fun getAllStreamersStream(): Flow<List<StreamerInfo>> = streamerInfoDao.getAllStreamers()
 
     //override fun getStreamerStream(id: String): Flow<StreamerInfo?> = streamerInfoDao.getStreamer(id)
-    override suspend fun getStreamer(id: String): StreamerInfo? = streamerInfoDao.getStreamer(id)
+    override suspend fun getStreamer(id: String): StreamerInfo = streamerInfoDao.getStreamer(id)
 
     override suspend fun insertStreamer(streamer: StreamerInfo) = streamerInfoDao.insert(streamer)
 

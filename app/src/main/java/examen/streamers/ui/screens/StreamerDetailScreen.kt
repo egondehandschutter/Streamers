@@ -1,6 +1,10 @@
 package examen.streamers.ui.screens
 
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.view.SoundEffectConstants
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +31,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -53,6 +58,14 @@ fun StreamerDetailsScreen(
     viewModel: StreamersViewModel
 ) {
     val appUiState = viewModel.appUiState.collectAsState()
+
+
+    val view = LocalView.current
+    val context = LocalContext.current
+    val streamer = appUiState.value.selectedStreamer
+
+
+
     Scaffold(
         topBar = {
             StreamersTopAppBar(
@@ -62,7 +75,10 @@ fun StreamerDetailsScreen(
             )
         }, floatingActionButton = {
             FloatingActionButton(
-                onClick = navigateBack,
+                onClick = {
+                    view.playSoundEffect(SoundEffectConstants.CLICK)
+                    toUrl(context = context, url =  streamer.twitchUrl)
+                },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
 
@@ -92,13 +108,43 @@ fun StreamerDetailsBody(appUiState: AppUiState, modifier: Modifier) {
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         val streamer = appUiState.selectedStreamer
+        val view = LocalView.current
         val context = LocalContext.current
         StreamerDetails(
             streamer = streamer, modifier = Modifier.fillMaxWidth()
         )
+        Button(
+            onClick = {
+                view.playSoundEffect(SoundEffectConstants.CLICK)
+                toUrl(context = context, url = streamer.twitchUrl)
+            },
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.small,
+            enabled = true
+        ) {
+            Text(stringResource(R.string.toTwitchUrl))
+        }
+        Button(
+            onClick = {
+                view.playSoundEffect(SoundEffectConstants.CLICK)
+                toUrl(context = context, url = streamer.url)
+            },
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.small,
+            enabled = true
+        ) {
+            Text(stringResource(R.string.toUrl))
+        }
     }
 
 }
+
+private fun toUrl(context: Context, url: String) {
+    val intentUri = Uri.parse(url)
+    val browseIntent = Intent(Intent.ACTION_VIEW, intentUri)
+    context.startActivity(browseIntent)
+}
+
 
 @Composable
 fun StreamerDetails(streamer: StreamerInfo?, modifier: Modifier) {
@@ -135,7 +181,7 @@ fun StreamerDetails(streamer: StreamerInfo?, modifier: Modifier) {
                         )
                     )
                 )
-                StreamerDetailsRow(
+                /*StreamerDetailsRow(
                     labelResID = R.string.twitchUrl,
                     streamerDetail = streamer?.twitchUrl ?: "",
                     modifier = Modifier.padding(
@@ -144,7 +190,7 @@ fun StreamerDetails(streamer: StreamerInfo?, modifier: Modifier) {
                                 .padding_medium
                         )
                     )
-                )
+                )*/
                 StreamerDetailsRow(
                     labelResID = R.string.isCommunityStreamer,
                     streamerDetail = streamer?.isCommunityStreamer.toString() ?: "",
@@ -155,7 +201,7 @@ fun StreamerDetails(streamer: StreamerInfo?, modifier: Modifier) {
                         )
                     )
                 )
-                StreamerDetailsRow(
+                /*StreamerDetailsRow(
                     labelResID = R.string.url,
                     streamerDetail = streamer?.url ?: "",
                     modifier = Modifier.padding(
@@ -164,7 +210,7 @@ fun StreamerDetails(streamer: StreamerInfo?, modifier: Modifier) {
                                 .padding_medium
                         )
                     )
-                )
+                )*/
             }
 
         }
