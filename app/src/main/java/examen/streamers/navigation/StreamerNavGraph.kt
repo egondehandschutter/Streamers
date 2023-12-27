@@ -3,10 +3,8 @@ package examen.streamers.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import examen.streamers.ui.screens.HomeDestination
 import examen.streamers.ui.screens.HomeScreen
 import examen.streamers.ui.screens.StreamerDetailsDestination
@@ -28,17 +26,12 @@ fun StreamerNavHost(
             HomeScreen(
                 navigateToDetails = {
                     viewModel.selectStreamer(it)
-                    navController.navigate("${StreamerDetailsDestination.route}/${it}")
+                    navController.navigate(StreamerDetailsDestination.route)
                 },
                 viewModel = viewModel
             )
         }
-        composable(
-            route = StreamerDetailsDestination.routeWithArgs,
-            arguments = listOf(navArgument(StreamerDetailsDestination.itemIdArg) {
-                type = NavType.StringType
-            })
-        ) {
+        composable(route = StreamerDetailsDestination.route) {
             StreamerDetailsScreen(
                 navigateBack = { navController.navigateUp() },
                 viewModel = viewModel

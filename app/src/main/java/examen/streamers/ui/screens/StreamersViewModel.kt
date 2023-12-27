@@ -7,15 +7,17 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import examen.streamers.StreamersApplication
+import examen.streamers.data.RealTimeStreamerInfo
 import examen.streamers.data.StreamerInfo
 import examen.streamers.data.StreamerInfoRepository
 import examen.streamers.data.StreamersRepository
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -32,7 +34,8 @@ data class AppUiState(
         isCommunityStreamer = false,
         twitchUrl = "",
         url = ""
-    )
+    ),
+    val refreshCount: Long = 0
 )
 
 class StreamersViewModel(
@@ -55,7 +58,9 @@ class StreamersViewModel(
     private val _uiState = MutableStateFlow(AppUiState())
     val appUiState: StateFlow<AppUiState> = _uiState.asStateFlow()
 
-    private suspend fun getAllStreamers() = coroutineScope {
+    var realTimeStreamerInfo: List<RealTimeStreamerInfo> = mutableListOf()
+
+    private fun getAllStreamers() = viewModelScope.launch {
         val streamers = async {
             try {
                 streamersRepository.getStreamersInfo()
@@ -77,10 +82,25 @@ class StreamersViewModel(
         }
     }
 
-    init {
-        Log.d("StreamerViewModel", "Init")
-        viewModelScope.launch { getAllStreamers() }
+    // Starts the real time monitoring of the live streamers and store in the view model
+    private fun startRealTimeStreamerMonitor() = viewModelScope.launch {
+        // Trigger the flow and consume its elements using collect
+        streamersRepository.realTimeStreamer
+            .catch { }
+            .collect {
+                realTimeStreamerInfo = it.toList()
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        refreshCount = currentState.refreshCount + 1
+                    )
+                }
+            }
+    }
 
+    init {
+        //Log.d("StreamerViewModel", "Init")
+        getAllStreamers()
+        startRealTimeStreamerMonitor()
     }
 
     override fun onCleared() {

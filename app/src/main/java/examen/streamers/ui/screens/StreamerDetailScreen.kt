@@ -38,8 +38,6 @@ import examen.streamers.ui.theme.StreamersTheme
 object StreamerDetailsDestination : NavigationDestination {
     override val route = "streamer_details"
     override val titleRes = R.string.streamer_detail_title
-    const val itemIdArg = "itemId"
-    val routeWithArgs = "$route/{$itemIdArg}"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
