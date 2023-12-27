@@ -76,6 +76,8 @@ dependencies {
     ksp("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
     implementation("androidx.room:room-ktx:${rootProject.extra["room_version"]}")
 
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -85,4 +87,5 @@ dependencies {
     androidTestImplementation("androidx.navigation:navigation-testing:2.7.6")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
 }
