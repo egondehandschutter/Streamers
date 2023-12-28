@@ -14,3 +14,29 @@ data class StreamerInfo(
     val url: String
 
 )
+
+// Declaration of the "special" streamers used in the application
+@Suppress("SpellCheckingInspection")
+object SpecialStreamers {
+    // when there are no streamers to display
+    val emptyStreamer = StreamerInfo(
+        username = "",
+        avatar = "",
+        isCommunityStreamer = false,
+        twitchUrl = "",
+        url = ""
+    )
+
+    // When the application starts, used in first recompositions of the home screen
+    val startStreamer = StreamerInfo(
+        username = "Please wait ...",
+        avatar = "",
+        isCommunityStreamer = false,
+        twitchUrl = "",
+        url = ""
+    )
+
+}
+
+
+

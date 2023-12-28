@@ -41,6 +41,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import examen.streamers.R
 import examen.streamers.StreamersTopAppBar
+import examen.streamers.data.SpecialStreamers
 import examen.streamers.data.StreamerInfo
 import examen.streamers.navigation.NavigationDestination
 import examen.streamers.ui.theme.StreamersTheme
@@ -60,12 +61,6 @@ fun StreamerDetailsScreen(
     val appUiState = viewModel.appUiState.collectAsState()
 
 
-    val view = LocalView.current
-    val context = LocalContext.current
-    val streamer = appUiState.value.selectedStreamer
-
-
-
     Scaffold(
         topBar = {
             StreamersTopAppBar(
@@ -73,21 +68,6 @@ fun StreamerDetailsScreen(
                 canNavigateBack = true,
                 navigateUp = navigateBack
             )
-        }, floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    view.playSoundEffect(SoundEffectConstants.CLICK)
-                    toUrl(context = context, url =  streamer.twitchUrl)
-                },
-                shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
-
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = stringResource(R.string.app_name),
-                )
-            }
         }, modifier = modifier
     ) { innerPadding ->
         StreamerDetailsBody(
@@ -131,7 +111,7 @@ fun StreamerDetailsBody(appUiState: AppUiState, modifier: Modifier) {
             },
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.small,
-            enabled = true
+            enabled = streamer.username != SpecialStreamers.emptyStreamer.username
         ) {
             Text(stringResource(R.string.toUrl))
         }
@@ -147,7 +127,7 @@ private fun toUrl(context: Context, url: String) {
 
 
 @Composable
-fun StreamerDetails(streamer: StreamerInfo?, modifier: Modifier) {
+fun StreamerDetails(streamer: StreamerInfo, modifier: Modifier) {
     Card(
         modifier = modifier, colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -159,7 +139,7 @@ fun StreamerDetails(streamer: StreamerInfo?, modifier: Modifier) {
                     80.dp
                 ),
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(streamer?.avatar)
+                    .data(streamer.avatar)
                     .build(),
                 //model = streamer?.avatar,
                 contentDescription = "Photo of the streamer"
@@ -173,7 +153,7 @@ fun StreamerDetails(streamer: StreamerInfo?, modifier: Modifier) {
             ) {
                 StreamerDetailsRow(
                     labelResID = R.string.streamer,
-                    streamerDetail = streamer?.username ?: "",
+                    streamerDetail = streamer.username,
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(
                             id = R.dimen
@@ -191,16 +171,29 @@ fun StreamerDetails(streamer: StreamerInfo?, modifier: Modifier) {
                         )
                     )
                 )*/
-                StreamerDetailsRow(
-                    labelResID = R.string.isCommunityStreamer,
-                    streamerDetail = streamer?.isCommunityStreamer.toString() ?: "",
-                    modifier = Modifier.padding(
-                        horizontal = dimensionResource(
-                            id = R.dimen
-                                .padding_medium
+                if (streamer.username != SpecialStreamers.emptyStreamer.username) {
+                    StreamerDetailsRow(
+                        labelResID = R.string.isCommunityStreamer,
+                        streamerDetail = streamer.isCommunityStreamer.toString(),
+                        modifier = Modifier.padding(
+                            horizontal = dimensionResource(
+                                id = R.dimen
+                                    .padding_medium
+                            )
                         )
                     )
-                )
+                } else {
+                    StreamerDetailsRow(
+                        labelResID = R.string.isCommunityStreamer,
+                        streamerDetail = "",
+                        modifier = Modifier.padding(
+                            horizontal = dimensionResource(
+                                id = R.dimen
+                                    .padding_medium
+                            )
+                        )
+                    )
+                }
                 /*StreamerDetailsRow(
                     labelResID = R.string.url,
                     streamerDetail = streamer?.url ?: "",
@@ -218,12 +211,12 @@ fun StreamerDetails(streamer: StreamerInfo?, modifier: Modifier) {
 
 @Composable
 private fun StreamerDetailsRow(
-    @StringRes labelResID: Int, streamerDetail: String?, modifier: Modifier = Modifier
+    @StringRes labelResID: Int, streamerDetail: String, modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
         Text(text = "${stringResource(labelResID)}:")
         Spacer(modifier = Modifier.weight(1f))
-        Text(text = streamerDetail ?: "", fontWeight = FontWeight.Bold)
+        Text(text = streamerDetail, fontWeight = FontWeight.Bold)
     }
 }
 

@@ -5,12 +5,21 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import examen.streamers.data.SpecialStreamers
 import examen.streamers.ui.screens.HomeDestination
 import examen.streamers.ui.screens.HomeScreen
 import examen.streamers.ui.screens.StreamerDetailsDestination
 import examen.streamers.ui.screens.StreamerDetailsScreen
 import examen.streamers.ui.screens.StreamersViewModel
 
+/**
+ * Provides Navigation graph for the application.
+ * The application has a home, filter and streamer details screen
+ * A bidirectional transition between home and filter screen is possible,
+ * as well as a bidirectional transition between home and streamer details screen.
+ * Click sounds are generated in the click callbacks provided
+ *
+ */
 @Composable
 fun StreamerNavHost(
     navController: NavHostController,
@@ -25,7 +34,10 @@ fun StreamerNavHost(
         composable(route = HomeDestination.route) {
             HomeScreen(
                 navigateToDetails = {
-                    viewModel.selectStreamer(it)
+                    if (it != SpecialStreamers.startStreamer.username)
+                        viewModel.selectStreamer(it)
+                    else
+                        viewModel.clearStreamer()
                     navController.navigate(StreamerDetailsDestination.route)
                 },
                 viewModel = viewModel

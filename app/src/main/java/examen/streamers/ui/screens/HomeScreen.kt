@@ -43,6 +43,7 @@ import coil.request.ImageRequest
 import examen.streamers.R
 import examen.streamers.StreamersTopAppBar
 import examen.streamers.data.RealTimeStreamerInfo
+import examen.streamers.data.SpecialStreamers
 import examen.streamers.data.StreamerInfo
 import examen.streamers.navigation.NavigationDestination
 
@@ -63,9 +64,8 @@ fun HomeScreen(
     val streamerUiState by viewModel.streamerUiState.collectAsState()
 
     val appUiState by viewModel.appUiState.collectAsState()
-    val variabele = appUiState.refreshCount
-    //Log.d("t",variabele.toString())
 
+    val synchronized = appUiState.synchronized
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     val realTimeStreamer = viewModel.realTimeStreamerInfo
@@ -87,6 +87,7 @@ fun HomeScreen(
             realTimeStreamerList = realTimeStreamer,
             streamerList = streamerUiState.streamerList,
             onItemClick = navigateToDetails,
+            synchronized = synchronized,
             modifier = modifier
                 .padding(innerPadding)
                 .fillMaxSize()
@@ -102,6 +103,7 @@ fun HomeBody(
     realTimeStreamerList: List<RealTimeStreamerInfo>,
     streamerList: List<StreamerInfo>,
     onItemClick: (String) -> Unit,
+    synchronized: Boolean,
     modifier: Modifier
 ) {
     Column(
@@ -112,6 +114,7 @@ fun HomeBody(
             realTimeStreamerList = realTimeStreamerList,
             streamerList = streamerList,
             onItemClick = { onItemClick(it.username) },
+            synchronized = synchronized,
             modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
         )
     }
@@ -122,6 +125,7 @@ fun StreamerList(
     realTimeStreamerList: List<RealTimeStreamerInfo>,
     streamerList: List<StreamerInfo>,
     onItemClick: (StreamerInfo) -> Unit,
+    synchronized: Boolean,
     modifier: Modifier
 ) {
     LazyColumn(modifier = modifier) {
@@ -130,6 +134,12 @@ fun StreamerList(
         var sortedList2 = streamerList.filter { !(liveUsernames.contains(it.username))}
         var sortedList = sortedList1 + sortedList2
         //var sortedList = streamerList.sortedByDescending { it.isCommunityStreamer }
+
+        // If the list is not synchronised, load startscreen
+        if (!synchronized)
+                sortedList = listOf(SpecialStreamers.startStreamer)
+
+
         items(items = sortedList, key = { it.username }) { streamer ->
             StreamerItem(
                 streamer = streamer,

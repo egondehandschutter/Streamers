@@ -8,6 +8,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import examen.streamers.StreamersApplication
 import examen.streamers.data.RealTimeStreamerInfo
+import examen.streamers.data.SpecialStreamers
 import examen.streamers.data.StreamerInfo
 import examen.streamers.data.StreamerInfoRepository
 import examen.streamers.data.StreamersRepository
@@ -25,16 +26,21 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
+/**
+ * Ui State set by Room
+ */
 data class StreamerUiState(val streamerList: List<StreamerInfo> = listOf())
 
 data class AppUiState(
-    val selectedStreamer: StreamerInfo = StreamerInfo(
+    /*val selectedStreamer: StreamerInfo = StreamerInfo(
         username = "",
         avatar = "",
         isCommunityStreamer = false,
         twitchUrl = "",
         url = ""
-    ),
+    ),*/
+    val selectedStreamer: StreamerInfo = SpecialStreamers.emptyStreamer,
+    val synchronized: Boolean = false, // true when online and offline data fully synchronized
     val refreshCount: Long = 0
 )
 
@@ -58,10 +64,12 @@ class StreamersViewModel(
     private val _uiState = MutableStateFlow(AppUiState())
     val appUiState: StateFlow<AppUiState> = _uiState.asStateFlow()
 
+    var retrofitSuccessful: Boolean = false // flagging successful retrofit
+
     var realTimeStreamerInfo: List<RealTimeStreamerInfo> = mutableListOf()
 
     private fun getAllStreamers() = viewModelScope.launch {
-        val streamers = async {
+        val streamerList =
             try {
                 streamersRepository.getStreamersInfo()
             } catch (e: IOException) {
@@ -69,8 +77,30 @@ class StreamersViewModel(
             } catch (e: HttpException) {
                 listOf()
             }
+            val usernames = streamerInfoRepository.getUsername().toMutableSet()
+        if (streamerList.isNotEmpty()) {
+            retrofitSuccessful = true
+            // Check if retrofitted streamer are identical in Room database
+            streamerList.forEach {
+                val unchanged = when {
+                    usernames.contains(it.username) -> it == streamerInfoRepository.getStreamer(it.username)
+                    else -> false
+                }
+                if (!unchanged)
+                    streamerInfoRepository.insertStreamer(it) // replace with retrofitted streamer
+                usernames.remove(it.username) // Remove primary key username for each retrofitted streamer
+            }
+            // Remove streamers corresponding to remaining usernames in usernames set
+            usernames.forEach {
+                streamerInfoRepository.deleteStreamer(streamerInfoRepository.getStreamer(it))
+                Log.d("StreamersViewModel", "Streamer with username $it removed from DB")
+            }
+        } else {
+            retrofitSuccessful = false
         }
-        streamers.await().forEach { streamerInfoRepository.insertStreamer(it) }
+        _uiState.update { currentState ->
+            currentState.copy(synchronized = true)
+        }
     }
 
     fun selectStreamer(id: String) = viewModelScope.launch {
@@ -79,6 +109,16 @@ class StreamersViewModel(
         }
         _uiState.update { currentState ->
             currentState.copy(selectedStreamer = streamer.await())
+        }
+    }
+
+
+    // Sets de selected streamer in state to the empty streamer (no information)
+    fun clearStreamer() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                selectedStreamer = SpecialStreamers.emptyStreamer
+            )
         }
     }
 
