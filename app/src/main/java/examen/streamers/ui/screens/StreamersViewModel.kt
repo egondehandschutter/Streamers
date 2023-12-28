@@ -13,7 +13,6 @@ import examen.streamers.data.StreamerInfo
 import examen.streamers.data.StreamerInfoRepository
 import examen.streamers.data.StreamersRepository
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

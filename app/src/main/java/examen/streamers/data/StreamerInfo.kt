@@ -16,7 +16,6 @@ data class StreamerInfo(
 )
 
 // Declaration of the "special" streamers used in the application
-@Suppress("SpellCheckingInspection")
 object SpecialStreamers {
     // when there are no streamers to display
     val emptyStreamer = StreamerInfo(
