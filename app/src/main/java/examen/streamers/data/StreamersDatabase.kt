@@ -5,6 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
+/**
+ * Database class with a singleton Instance object.
+ */
 @Database(entities = [StreamerInfo::class], version = 1, exportSchema = false)
 abstract class StreamersDatabase : RoomDatabase() {
     abstract fun streamerInfoDao(): StreamerInfoDao

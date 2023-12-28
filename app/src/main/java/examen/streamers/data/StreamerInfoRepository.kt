@@ -2,15 +2,25 @@ package examen.streamers.data
 
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Repository that provides insert, update, delete, and retrieve of [StreamerInfo] from a given data source.
+ */
 interface StreamerInfoRepository {
 
+    /**
+     * Retrieve all the streamers from the the given data source.
+     */
     fun getAllStreamersStream(): Flow<List<StreamerInfo>>
 
     /**
-     * Retrieve a streamer from the given data source that matches with the [id].
+     * Retrieve a streamer from the given data source that matches with the [username].
      */
     //fun getStreamerStream(id: String): Flow<StreamerInfo?>
-    suspend fun getStreamer(id: String): StreamerInfo
+    suspend fun getStreamer(username: String): StreamerInfo
+
+
+    // Retrieve the list of primary keys which are distinct by nature
+    suspend fun getUsername(): List<String>
 
     /**
      * Insert streamer in the data source
@@ -33,7 +43,9 @@ class OfflineStreamerInfoRepository(private val streamerInfoDao: StreamerInfoDao
     override fun getAllStreamersStream(): Flow<List<StreamerInfo>> = streamerInfoDao.getAllStreamers()
 
     //override fun getStreamerStream(id: String): Flow<StreamerInfo?> = streamerInfoDao.getStreamer(id)
-    override suspend fun getStreamer(id: String): StreamerInfo = streamerInfoDao.getStreamer(id)
+    override suspend fun getStreamer(username: String): StreamerInfo = streamerInfoDao.getStreamer(username)
+
+    override suspend fun getUsername(): List<String> = streamerInfoDao.getUsernames()
 
     override suspend fun insertStreamer(streamer: StreamerInfo) = streamerInfoDao.insert(streamer)
 

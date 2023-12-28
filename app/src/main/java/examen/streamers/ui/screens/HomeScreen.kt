@@ -125,8 +125,12 @@ fun StreamerList(
     modifier: Modifier
 ) {
     LazyColumn(modifier = modifier) {
-
-        items(items = streamerList, key = { it.username }) { streamer ->
+        var liveUsernames = realTimeStreamerList.filter { it.isLive } .map { it.username }
+        var sortedList1 = streamerList.filter { liveUsernames.contains(it.username)}
+        var sortedList2 = streamerList.filter { !(liveUsernames.contains(it.username))}
+        var sortedList = sortedList1 + sortedList2
+        //var sortedList = streamerList.sortedByDescending { it.isCommunityStreamer }
+        items(items = sortedList, key = { it.username }) { streamer ->
             StreamerItem(
                 streamer = streamer,
                 realTimeStreamerList = realTimeStreamerList,

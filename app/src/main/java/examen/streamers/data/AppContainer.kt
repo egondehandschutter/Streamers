@@ -7,7 +7,9 @@ import retrofit2.Retrofit
 import okhttp3.MediaType.Companion.toMediaType
 import android.content.Context
 
-
+/**
+ * Dependency Injection container at the application level.
+ */
 interface AppContainer {
     val streamersRepository: StreamersRepository
     val streamerInfoRepository: StreamerInfoRepository
@@ -43,6 +45,9 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
         NetworkStreamersRepository(retrofitService)
     }
 
+    /**
+     * DI Implementation for [StreamerInfoRepository]
+     */
     override val streamerInfoRepository: StreamerInfoRepository by lazy {
         OfflineStreamerInfoRepository(StreamersDatabase.getDatabase(context).streamerInfoDao())
     }
