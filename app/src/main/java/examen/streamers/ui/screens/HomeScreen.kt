@@ -178,6 +178,7 @@ fun StreamerItem(
             //Spacer(Modifier.weight(1f))
             StreamerInformation(
                 username = streamer.username,
+                isStreamerLive = isStreamerLive,
                 modifier = Modifier
             )
             /*Text(
@@ -239,6 +240,7 @@ fun StreamerIcon(
 @Composable
 fun StreamerInformation(
     username: String,
+    isStreamerLive: Boolean,
     modifier: Modifier
 ) {
     Column(modifier = modifier) {
@@ -247,15 +249,21 @@ fun StreamerInformation(
             style = MaterialTheme.typography.displaySmall,
             modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
         )
-        Image(
-            modifier = modifier
-                .size(dimensionResource(R.dimen.image_size))
-                .padding(dimensionResource(R.dimen.padding_small))
-                .clip(MaterialTheme.shapes.small),
-            contentScale = ContentScale.Crop,
-            painter = painterResource(id = R.drawable.live),
-            contentDescription = stringResource(id = R.string.live_content_description)
-        )
+        if (isStreamerLive) {
+            Image(
+                modifier = modifier
+                    .size(dimensionResource(R.dimen.image_size))
+                    .padding(dimensionResource(R.dimen.padding_small))
+                    .clip(MaterialTheme.shapes.small),
+                contentScale = ContentScale.Crop,
+                painter =
+                    painterResource(id = R.drawable.live),
+                contentDescription = stringResource(id = R.string.live_content_description),
+            )
+        } else {
+            null
+        }
+
     }
 }
 

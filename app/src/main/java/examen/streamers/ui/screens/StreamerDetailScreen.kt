@@ -120,7 +120,7 @@ fun StreamerDetailsBody(appUiState: AppUiState, modifier: Modifier) {
             },
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.small,
-            enabled = true
+            enabled = streamer.twitchUrl != ""
         ) {
             Text(stringResource(R.string.toTwitchUrl))
         }
