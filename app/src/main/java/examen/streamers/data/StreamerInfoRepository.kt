@@ -20,7 +20,7 @@ interface StreamerInfoRepository {
 
 
     // Retrieve the list of primary keys which are distinct by nature
-    suspend fun getUsername(): List<String>
+    suspend fun getUsernames(): List<String>
 
     /**
      * Insert streamer in the data source
@@ -45,7 +45,7 @@ class OfflineStreamerInfoRepository(private val streamerInfoDao: StreamerInfoDao
     //override fun getStreamerStream(id: String): Flow<StreamerInfo?> = streamerInfoDao.getStreamer(id)
     override suspend fun getStreamer(username: String): StreamerInfo = streamerInfoDao.getStreamer(username)
 
-    override suspend fun getUsername(): List<String> = streamerInfoDao.getUsernames()
+    override suspend fun getUsernames(): List<String> = streamerInfoDao.getUsernames()
 
     override suspend fun insertStreamer(streamer: StreamerInfo) = streamerInfoDao.insert(streamer)
 

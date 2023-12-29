@@ -35,6 +35,14 @@ object SpecialStreamers {
         url = ""
     )
 
+    val noStreamer = StreamerInfo(
+        username = "No streamers found ...",
+        avatar = "",
+        isCommunityStreamer = false,
+        twitchUrl = "",
+        url = ""
+    )
+
 }
 
 

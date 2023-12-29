@@ -38,7 +38,7 @@ data class AppUiState(
         twitchUrl = "",
         url = ""
     ),*/
-    val selectedStreamer: StreamerInfo = SpecialStreamers.emptyStreamer,
+    val selectedStreamer: StreamerInfo = SpecialStreamers.noStreamer,
     val synchronized: Boolean = false, // true when online and offline data fully synchronized
     val refreshCount: Long = 0
 )
@@ -76,7 +76,7 @@ class StreamersViewModel(
             } catch (e: HttpException) {
                 listOf()
             }
-            val usernames = streamerInfoRepository.getUsername().toMutableSet()
+            val usernames = streamerInfoRepository.getUsernames().toMutableSet()
         if (streamerList.isNotEmpty()) {
             retrofitSuccessful = true
             // Check if retrofitted streamer are identical in Room database

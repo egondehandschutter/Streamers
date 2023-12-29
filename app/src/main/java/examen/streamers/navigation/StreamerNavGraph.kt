@@ -34,7 +34,7 @@ fun StreamerNavHost(
         composable(route = HomeDestination.route) {
             HomeScreen(
                 navigateToDetails = {
-                    if (it != SpecialStreamers.startStreamer.username)
+                    if (it != SpecialStreamers.startStreamer.username && it != SpecialStreamers.noStreamer.username)
                         viewModel.selectStreamer(it)
                     else
                         viewModel.clearStreamer()

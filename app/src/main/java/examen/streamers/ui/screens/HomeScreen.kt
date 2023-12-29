@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -128,9 +129,17 @@ fun StreamerList(
         var sortedList = sortedList1 + sortedList2
         //var sortedList = streamerList.sortedByDescending { it.isCommunityStreamer }
 
+
+        val isEmptyList = sortedList.isEmpty()
+        if (isEmptyList) {
+            sortedList = if (synchronized)
+                listOf(SpecialStreamers.noStreamer)
+            else
+                listOf(SpecialStreamers.startStreamer)
+        }
         // If the list is not synchronised, load startscreen
-        if (!synchronized)
-                sortedList = listOf(SpecialStreamers.startStreamer)
+        /*if (!synchronized)
+                sortedList = listOf(SpecialStreamers.startStreamer)*/
 
 
         items(items = sortedList, key = { it.username }) { streamer ->
@@ -253,7 +262,8 @@ fun StreamerInformation(
     Column(modifier = modifier) {
         Text(
             text = username,
-            style = MaterialTheme.typography.displaySmall,
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
         )
         if (isStreamerLive) {
