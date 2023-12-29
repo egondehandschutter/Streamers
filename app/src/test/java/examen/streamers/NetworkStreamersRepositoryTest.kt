@@ -1,7 +1,6 @@
 package examen.streamers
 
 import examen.streamers.data.NetworkStreamersRepository
-import examen.streamers.data.StreamerInfo
 import examen.streamers.fake.FakeDataSource
 import examen.streamers.fake.FakeStreamerApiService
 import junit.framework.TestCase.assertEquals

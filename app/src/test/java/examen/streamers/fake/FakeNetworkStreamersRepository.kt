@@ -7,6 +7,7 @@ import examen.streamers.data.TestException
 import examen.streamers.model.Streamers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
@@ -36,15 +37,13 @@ class FakeNetworkStreamersRepository (
     }
 
     override val realTimeStreamer: Flow<List<RealTimeStreamerInfo>> = flow {
-        while (true) {
-            try {
-                val realTimeStreamer = getRealTimeStreamerInfo()
-                emit(realTimeStreamer) // Emits the result of the request to the flow
+        emit(
+            getStreamers().streamers.map {
+                RealTimeStreamerInfo(
+                    username = it.username,
+                    isLive = it.isLive
+                )
             }
-            catch (_: IOException) {  }
-            catch (_: HttpException) {  }
-            catch (e: TestException) { break }
-            delay(timeMillis = 60000) // Suspends the coroutine for some time
-        }
+        )
     }
 }
