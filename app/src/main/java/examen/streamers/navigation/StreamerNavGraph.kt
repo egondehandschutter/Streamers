@@ -1,7 +1,9 @@
 package examen.streamers.navigation
 
+import android.view.SoundEffectConstants
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,6 +28,7 @@ fun StreamerNavHost(
     viewModel: StreamersViewModel,
     modifier: Modifier = Modifier
 ) {
+    val view = LocalView.current
     NavHost(
         navController = navController,
         startDestination = HomeDestination.route,
@@ -34,6 +37,7 @@ fun StreamerNavHost(
         composable(route = HomeDestination.route) {
             HomeScreen(
                 navigateToDetails = {
+                    view.playSoundEffect(SoundEffectConstants.CLICK)
                     if (it != SpecialStreamers.startStreamer.username && it != SpecialStreamers.noStreamer.username)
                         viewModel.selectStreamer(it)
                     else
@@ -45,7 +49,9 @@ fun StreamerNavHost(
         }
         composable(route = StreamerDetailsDestination.route) {
             StreamerDetailsScreen(
-                navigateBack = { navController.navigateUp() },
+                navigateBack = {
+                    view.playSoundEffect(SoundEffectConstants.CLICK)
+                    navController.navigateUp() },
                 viewModel = viewModel
             )
         }

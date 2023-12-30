@@ -1,6 +1,7 @@
 package examen.streamers.ui.screens
 
 import android.annotation.SuppressLint
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -91,9 +93,9 @@ fun HomeScreen(
 
 
 }
-
+@VisibleForTesting
 @Composable
-fun HomeBody(
+internal fun HomeBody(
     realTimeStreamerList: List<RealTimeStreamerInfo>,
     streamerList: List<StreamerInfo>,
     onItemClick: (String) -> Unit,
@@ -124,9 +126,9 @@ fun StreamerList(
 ) {
     LazyColumn(modifier = modifier) {
         val liveUsernames = realTimeStreamerList.filter { it.isLive } .map { it.username }
-        val sortedList1 = streamerList.filter { liveUsernames.contains(it.username)}
-        val sortedList2 = streamerList.filter { !(liveUsernames.contains(it.username))}
-        var sortedList = sortedList1 + sortedList2
+        val filteredListOne = streamerList.filter { liveUsernames.contains(it.username)}
+        val filteredListTwo = streamerList.filter { !(liveUsernames.contains(it.username))}
+        var sortedList = filteredListOne + filteredListTwo
         //var sortedList = streamerList.sortedByDescending { it.isCommunityStreamer }
 
 
@@ -149,6 +151,7 @@ fun StreamerList(
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
                     .clickable { onItemClick(streamer) }
+                    .testTag(stringResource(R.string.testTag))
                     )
         }
     }

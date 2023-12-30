@@ -10,4 +10,5 @@
     <string name="toTwitchUrl">Go to twitch</string>
     <string name="toUrl">Go to chess.com</string>
     <string name="live_content_description">live icon</string>
+    <string name="testTag">Test tag</string>
 </resources>

@@ -2,11 +2,14 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="StreamerAppScreenTest">
+        <State />
+      </entry>
       <entry key="app">
         <State>
-          <targetSelectedWithDropDown>
+          <runningDeviceTargetSelectedWithDropDown>
             <Target>
-              <type value="QUICK_BOOT_TARGET" />
+              <type value="RUNNING_DEVICE_TARGET" />
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
@@ -14,9 +17,21 @@
                 </Key>
               </deviceKey>
             </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2023-12-28T10:37:04.047318Z" />
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2023-12-30T13:51:56.050832400Z" />
         </State>
+      </entry>
+      <entry key="doctorDetailsScreen_verifyContent_doctorIsEmpty()">
+        <State />
+      </entry>
+      <entry key="homeScreen_verifyContent_oneLive()">
+        <State />
+      </entry>
+      <entry key="streamerDetailsScreen_verifyContent_streamerExists()">
+        <State />
+      </entry>
+      <entry key="streamerDetailsScreen_verifyContent_streamerExists_withoutTwitchUrl()">
+        <State />
       </entry>
     </value>
   </component>
