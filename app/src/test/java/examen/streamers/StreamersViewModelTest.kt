@@ -1,6 +1,6 @@
 package examen.streamers
 
-import examen.huisartsengent.components.TestDispatcherRule
+import examen.streamers.components.TestDispatcherRule
 import examen.streamers.data.OfflineStreamerInfoRepository
 import examen.streamers.data.RealTimeStreamerInfo
 import examen.streamers.data.SpecialStreamers

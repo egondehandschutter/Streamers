@@ -9,7 +9,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
-import examen.huisartsengent.components.assertCurrentRouteName
+import examen.streamers.components.assertCurrentRouteName
 import examen.streamers.ui.screens.HomeDestination
 import examen.streamers.ui.screens.StreamerDetailsDestination
 import org.junit.Before
