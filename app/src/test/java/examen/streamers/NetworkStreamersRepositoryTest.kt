@@ -16,5 +16,4 @@ class NetworkStreamersRepositoryTest {
             )
             assertEquals(FakeDataSource.streamers, repository.getStreamers())
         }
-
 }

@@ -77,6 +77,8 @@ class StreamerAppScreenTest {
     // Declare list of streamers containing first and second streamer
     private val streamersTwo = listOf(streamerOne, streamerTwo, streamerThree)
 
+    private val streamersEmpty : List<StreamerInfo> = emptyList()
+
     // Declare list of streamers containing first and second streamer
     private val realTimeStreamersTwo = listOf(realTimeStreamerOne, realTimeStreamerTwo, realTimeStreamerThree)
 
@@ -94,6 +96,11 @@ class StreamerAppScreenTest {
     private val appUiStateThree = AppUiState(
         selectedStreamer = streamerTwo
     )
+
+    private val appUiStateFour = AppUiState(
+        selectedStreamer = SpecialStreamers.noStreamer
+    )
+
 
     @Test
     fun homeScreen_verifyContent_noLive() {
@@ -163,6 +170,25 @@ class StreamerAppScreenTest {
     }
 
     @Test
+    fun homeScreen_verifyContent_noStreamers() {
+        // When HomeScreen is loaded
+        composeTestRule.setContent {
+            HomeBody(
+                realTimeStreamerList = realTimeStreamers,
+                streamerList = streamersEmpty,
+                onItemClick = { },
+                synchronized = true,
+                Modifier
+            )
+        }
+        // Check whether both streamers are in the scrollable list
+        // and are clickable
+        composeTestRule.onNodeWithText(SpecialStreamers.noStreamer.username)
+            .assertIsDisplayed()
+            .assertHasClickAction()
+    }
+
+    @Test
     fun streamerDetailsScreen_verifyContent_streamerExists_withTwitchUrl() {
         // When StreamerDetailsScreen is loaded
         // and the first streamer is selected
@@ -198,6 +224,39 @@ class StreamerAppScreenTest {
         composeTestRule.setContent {
             StreamerDetailsBody(
                 appUiState = appUiStateTwo,
+                Modifier
+            )
+        }
+        // Check if twitchurl intent button is displayed
+        // but not enabled
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.toTwitchUrl))
+            .assertIsDisplayed()
+            .assertIsNotEnabled()
+
+        // Check if url intent button is displayed
+        // but not enabled
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.toTwitchUrl))
+            .assertIsDisplayed()
+            .assertIsNotEnabled()
+
+
+        // Check if empty streamer details are displayed
+        // and cannot be clicked
+        composeTestRule.onNodeWithText(
+            text = composeTestRule.activity.getString(R.string.isCommunityStreamer),
+            substring = true
+        )
+            .assertIsDisplayed()
+            .assertHasNoClickAction()
+    }
+
+    @Test
+    fun streamerDetailsScreen_verifyContent_noStreamers() {   //error path
+        // When StreamerDetailsScreen is loaded
+        // and the "empty" streamer is selected
+        composeTestRule.setContent {
+            StreamerDetailsBody(
+                appUiState = appUiStateFour,
                 Modifier
             )
         }

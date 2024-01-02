@@ -2,9 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="StreamerAppScreenTest">
-        <State />
-      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>
@@ -21,16 +18,13 @@
           <timeTargetWasSelectedWithDropDown value="2023-12-31T13:55:28.751100600Z" />
         </State>
       </entry>
-      <entry key="doctorDetailsScreen_verifyContent_doctorIsEmpty()">
+      <entry key="homeScreen_verifyContent_noStreamers()">
         <State />
       </entry>
-      <entry key="homeScreen_verifyContent_oneLive()">
+      <entry key="streamerDetailsScreen_verifyContent_noStreamers()">
         <State />
       </entry>
-      <entry key="streamerDetailsScreen_verifyContent_streamerExists()">
-        <State />
-      </entry>
-      <entry key="streamerDetailsScreen_verifyContent_streamerExists_withoutTwitchUrl()">
+      <entry key="streamerDetailsScreen_verifyContent_streamerIsEmpty()">
         <State />
       </entry>
     </value>

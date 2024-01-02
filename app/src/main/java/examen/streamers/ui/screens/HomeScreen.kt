@@ -3,7 +3,14 @@ package examen.streamers.ui.screens
 import android.annotation.SuppressLint
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.hoverable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,9 +29,11 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -131,6 +140,10 @@ fun StreamerList(
     synchronized: Boolean,
     modifier: Modifier
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val isHovered by interactionSource.collectIsHoveredAsState()
+    val isFocused by interactionSource.collectIsFocusedAsState()
     LazyColumn(modifier = modifier) {
         val liveUsernames = realTimeStreamerList.filter { it.isLive } .map { it.username }
         val filteredListOne = streamerList.filter { liveUsernames.contains(it.username)}
@@ -152,12 +165,13 @@ fun StreamerList(
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
                     .clickable { onItemClick(streamer) }
+                    .hoverable(interactionSource = interactionSource)
+                    .focusable(interactionSource = interactionSource)
                     .testTag(stringResource(R.string.testTag))
             )
         }
     }
 }
-
 
 /**
  * Composable that displays a list item containing a streamer icon and teh streamer information.
@@ -180,7 +194,11 @@ fun StreamerItem(
     }
 
     Card(
-        modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        )
     ) {
         Row(
             modifier = Modifier

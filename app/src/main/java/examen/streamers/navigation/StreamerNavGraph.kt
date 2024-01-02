@@ -1,6 +1,9 @@
 package examen.streamers.navigation
 
 import android.view.SoundEffectConstants
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
@@ -35,7 +38,14 @@ fun StreamerNavHost(
         startDestination = HomeDestination.route,
         modifier = modifier
     ) {
-        composable(route = HomeDestination.route) {
+        composable(route = HomeDestination.route,
+            enterTransition = {
+                return@composable fadeIn(tween(1000))
+            }, exitTransition = {
+                return@composable slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Start, tween(700))
+            }
+            ) {
             HomeScreen(
                 navigateToDetails = {
                     view.playSoundEffect(SoundEffectConstants.CLICK)
@@ -48,7 +58,18 @@ fun StreamerNavHost(
                 viewModel = viewModel
             )
         }
-        composable(route = StreamerDetailsDestination.route) {
+        composable(route = StreamerDetailsDestination.route,
+            enterTransition = {
+                return@composable slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
+                )
+            },
+            exitTransition = {
+                return@composable slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.End, tween(700)
+                )
+            }
+            ) {
             StreamerDetailsScreen(
                 navigateBack = {
                     view.playSoundEffect(SoundEffectConstants.CLICK)
