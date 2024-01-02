@@ -1,4 +1,4 @@
-package examen.huisartsengent.components
+package examen.streamers.components
 
 import androidx.navigation.NavController
 import org.junit.Assert

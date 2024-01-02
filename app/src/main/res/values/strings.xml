@@ -1,14 +1,15 @@
 <resources>
     <string name="app_name">Streamers</string>
-    <string name ="filter_title">Kies Filter Opties</string>
-    <string name="streamer_detail_title">Profiel</string>
+    <string name="streamer_detail_title">Profile</string>
     <string name="back_button">Back</string>
     <string name="streamer">Streamer</string>
-    <string name="twitchUrl">twitchUrl</string>
     <string name="isCommunityStreamer">CommunityStreamer</string>
     <string name="url">chess.com url</string>
     <string name="toTwitchUrl">Go to twitch</string>
     <string name="toUrl">Go to chess.com</string>
     <string name="live_content_description">live icon</string>
     <string name="testTag">Test tag</string>
+    <string name="isCommunityStreamer_content_description">Photo of the streamer</string>
+    <string name="yes">"Yes"</string>
+    <string name="no">"No"</string>
 </resources>

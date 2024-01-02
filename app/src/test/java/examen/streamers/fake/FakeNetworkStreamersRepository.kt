@@ -3,14 +3,10 @@ package examen.streamers.fake
 import examen.streamers.data.RealTimeStreamerInfo
 import examen.streamers.data.StreamerInfo
 import examen.streamers.data.StreamersRepository
-import examen.streamers.data.TestException
 import examen.streamers.model.Streamers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
-import retrofit2.HttpException
-import java.io.IOException
+
 
 
 class FakeNetworkStreamersRepository (
@@ -23,7 +19,7 @@ class FakeNetworkStreamersRepository (
         StreamerInfo(
             username = it.username,
             avatar = it.avatar,
-            twitchUrl = it.twitchUrl?: "",
+            twitchUrl = it.twitchUrl ?: "",
             url = it.url,
             isCommunityStreamer = it.isCommunityStreamer,
         )

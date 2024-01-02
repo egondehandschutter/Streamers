@@ -16,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import examen.streamers.data.StreamerInfo
 import examen.streamers.navigation.StreamerNavHost
 import examen.streamers.ui.screens.StreamersViewModel
 

@@ -64,15 +64,14 @@ class StreamersViewModel(
             )
 
     /**
-     * Holds ui state. holds a selected streamer recieved from [StreamerInfoRepository],
-     * if the list is synchronised and the refreshcount and mapped to
+     * Holds ui state. holds a selected streamer received from [StreamerInfoRepository],
+     * if the list is synchronised and the refresh count and mapped to
      * [AppUiState]
      */
     private val _uiState = MutableStateFlow(AppUiState())
     val appUiState: StateFlow<AppUiState> = _uiState.asStateFlow()
 
     var retrofitSuccessful: Boolean = false // flagging successful retrofit
-
     var realTimeStreamerInfo: List<RealTimeStreamerInfo> = mutableListOf()
 
     /**
@@ -88,7 +87,7 @@ class StreamersViewModel(
             } catch (e: HttpException) {
                 listOf()
             }
-            val usernames = streamerInfoRepository.getUsernames().toMutableSet()
+        val usernames = streamerInfoRepository.getUsernames().toMutableSet()
         if (streamerList.isNotEmpty()) {
             retrofitSuccessful = true
             // Check if retrofitted streamer are identical in Room database

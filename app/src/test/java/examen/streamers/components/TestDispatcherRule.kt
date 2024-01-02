@@ -1,4 +1,4 @@
-package examen.huisartsengent.components
+package examen.streamers.components
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

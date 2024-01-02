@@ -17,7 +17,7 @@ interface StreamerInfoDao {
      * gets all the streamer info.
      * @return list with all the StreamerInfo.
      */
-    // Retrieve streamers sorted bu communes as a flow
+    // Retrieve streamers as a flow
     @Query("SELECT * from streamers")
     fun getAllStreamers(): Flow<List<StreamerInfo>>
 

@@ -12,12 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -25,9 +22,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -68,13 +62,12 @@ fun HomeScreen(
     viewModel: StreamersViewModel
 ) {
     val streamerUiState by viewModel.streamerUiState.collectAsState()
-
     val appUiState by viewModel.appUiState.collectAsState()
 
     val synchronized = appUiState.synchronized
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
     val realTimeStreamer = viewModel.realTimeStreamerInfo
+
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -84,9 +77,7 @@ fun HomeScreen(
                 canNavigateBack = false,
                 scrollBehavior = scrollBehavior
             )
-        },
-
-
+        }
     ) { innerPadding ->
 
         HomeBody(
@@ -98,10 +89,7 @@ fun HomeScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         )
-
-}
-
-
+    }
 }
 
 /**
@@ -129,7 +117,7 @@ internal fun HomeBody(
             modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
         )
     }
-    }
+ }
 
 /**
  * Composable that displays a list of streamers.
@@ -149,7 +137,6 @@ fun StreamerList(
         val filteredListTwo = streamerList.filter { !(liveUsernames.contains(it.username))}
         var sortedList = filteredListOne + filteredListTwo
 
-
         val isEmptyList = sortedList.isEmpty()
         if (isEmptyList) {
             sortedList = if (synchronized)
@@ -157,7 +144,6 @@ fun StreamerList(
             else
                 listOf(SpecialStreamers.startStreamer)
         }
-
 
         items(items = sortedList, key = { it.username }) { streamer ->
             StreamerItem(
@@ -167,7 +153,7 @@ fun StreamerList(
                     .padding(dimensionResource(id = R.dimen.padding_small))
                     .clickable { onItemClick(streamer) }
                     .testTag(stringResource(R.string.testTag))
-                    )
+            )
         }
     }
 }
@@ -212,10 +198,6 @@ fun StreamerItem(
             )
         }
     }
-
-  
-
-
 }
 
 /**
@@ -272,11 +254,7 @@ fun StreamerInformation(
                 painterResource(id = R.drawable.live),
                 contentDescription = stringResource(id = R.string.live_content_description),
             )
-        } else {
-            null
         }
-
-
     }
 }
 

@@ -10,7 +10,7 @@ class FakeStreamerInfoDao: StreamerInfoDao{
         StreamerInfo(
             username = it.username,
             avatar = it.avatar,
-            twitchUrl = it.twitchUrl?: "",
+            twitchUrl = it.twitchUrl ?: "",
             url = it.url,
             isCommunityStreamer = it.isCommunityStreamer,
         )

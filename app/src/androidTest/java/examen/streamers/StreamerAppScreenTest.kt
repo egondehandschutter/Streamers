@@ -252,6 +252,4 @@ class StreamerAppScreenTest {
             .assertIsDisplayed()
             .assertHasNoClickAction()
     }
-
-
 }

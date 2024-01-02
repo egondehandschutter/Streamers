@@ -147,7 +147,7 @@ fun StreamerDetails(streamer: StreamerInfo, modifier: Modifier) {
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(streamer.avatar)
                     .build(),
-                contentDescription = "Photo of the streamer"
+                contentDescription = stringResource(R.string.isCommunityStreamer_content_description)
 
             )
             Column(
@@ -167,9 +167,13 @@ fun StreamerDetails(streamer: StreamerInfo, modifier: Modifier) {
                     )
                 )
                 if (streamer.username != SpecialStreamers.emptyStreamer.username) {
+                    val streamerDetail = if (streamer.isCommunityStreamer)
+                        stringResource(R.string.yes)
+                    else
+                        stringResource(R.string.no)
                     StreamerDetailsRow(
                         labelResID = R.string.isCommunityStreamer,
-                        streamerDetail = streamer.isCommunityStreamer.toString(),
+                        streamerDetail = streamerDetail,
                         modifier = Modifier.padding(
                             horizontal = dimensionResource(
                                 id = R.dimen

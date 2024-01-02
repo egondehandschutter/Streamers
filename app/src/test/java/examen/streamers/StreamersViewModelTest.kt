@@ -1,7 +1,6 @@
 package examen.streamers
 
 import examen.huisartsengent.components.TestDispatcherRule
-import examen.streamers.data.NetworkStreamersRepository
 import examen.streamers.data.OfflineStreamerInfoRepository
 import examen.streamers.data.RealTimeStreamerInfo
 import examen.streamers.data.SpecialStreamers
@@ -49,7 +48,7 @@ class StreamersViewModelTest {
                 StreamerInfo(
                     username = it.username,
                     avatar = it.avatar,
-                    twitchUrl = it.twitchUrl?: "",
+                    twitchUrl = it.twitchUrl ?: "",
                     url = it.url,
                     isCommunityStreamer = it.isCommunityStreamer
                 )
@@ -85,7 +84,7 @@ class StreamersViewModelTest {
             StreamerInfo(
                 username = it.username,
                 avatar = it.avatar,
-                twitchUrl = it.twitchUrl?: "",
+                twitchUrl = it.twitchUrl ?: "",
                 url = it.url,
                 isCommunityStreamer = it.isCommunityStreamer
             )
