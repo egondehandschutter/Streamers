@@ -19,8 +19,8 @@ interface StreamersRepository {
     suspend fun getStreamersInfo(): List<StreamerInfo>
     /** Fetches real time streamers spots from RealTimeStreamerApi */
     suspend fun getRealTimeStreamerInfo(): List<RealTimeStreamerInfo>
-
-    /* Flow that emits the real time parking info on a regular (60 s) basis*/
+    /** list with the RealTimeStreamerInfo */
+    /* Flow that emits the real time parking info on a regul    ar (60 s) basis*/
     val realTimeStreamer: Flow<List<RealTimeStreamerInfo>>
 }
 
@@ -40,9 +40,10 @@ class NetworkStreamersRepository(
     private val apiEndpoint = "streamers"
 
 
-    /** Fetches streamer locations from StreamerApi according to apiEndpoint*/
+    /** Fetches streamer from StreamerApi according to apiEndpoint*/
     override suspend fun getStreamers(): Streamers = streamerApiService.getStreamers(apiEndpoint)
 
+    /** Convert the fetched streamer to streamer info*/
     override suspend fun getStreamersInfo(): List<StreamerInfo> {
         val result = getStreamers().streamers
         val streamersInfo = result.map {

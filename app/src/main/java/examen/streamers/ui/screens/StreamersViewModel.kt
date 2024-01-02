@@ -30,19 +30,22 @@ import java.io.IOException
  */
 data class StreamerUiState(val streamerList: List<StreamerInfo> = listOf())
 
+/**
+ * Other Ui State
+ */
 data class AppUiState(
-    /*val selectedStreamer: StreamerInfo = StreamerInfo(
-        username = "",
-        avatar = "",
-        isCommunityStreamer = false,
-        twitchUrl = "",
-        url = ""
-    ),*/
     val selectedStreamer: StreamerInfo = SpecialStreamers.noStreamer,
     val synchronized: Boolean = false, // true when online and offline data fully synchronized
     val refreshCount: Long = 0
 )
 
+/**
+ * class for the the view model
+ *
+ * @property streamerInfoRepository for the offline repository.
+ * @property streamersRepository for the online repository.
+ * @constructor creates the Streamers view model with a streamerInfoRepository, streamersRepository.
+ */
 class StreamersViewModel(
     val streamerInfoRepository: StreamerInfoRepository,
     val streamersRepository: StreamersRepository
@@ -60,6 +63,11 @@ class StreamersViewModel(
                 initialValue = StreamerUiState()
             )
 
+    /**
+     * Holds ui state. holds a selected streamer recieved from [StreamerInfoRepository],
+     * if the list is synchronised and the refreshcount and mapped to
+     * [AppUiState]
+     */
     private val _uiState = MutableStateFlow(AppUiState())
     val appUiState: StateFlow<AppUiState> = _uiState.asStateFlow()
 
@@ -67,6 +75,10 @@ class StreamersViewModel(
 
     var realTimeStreamerInfo: List<RealTimeStreamerInfo> = mutableListOf()
 
+    /**
+     * Gets streamers information from the Streamers API Retrofit service
+     * and updates the room database.
+     */
     private fun getAllStreamers() = viewModelScope.launch {
         val streamerList =
             try {
@@ -102,16 +114,22 @@ class StreamersViewModel(
         }
     }
 
-    fun selectStreamer(id: String) = viewModelScope.launch {
+    /**
+     * Gets the selected streamer information from the Streamers API Retrofit service
+     * @param username username of the streamer
+     */
+    fun selectStreamer(username: String) = viewModelScope.launch {
         val streamer = async {
-            streamerInfoRepository.getStreamer(id)
+            streamerInfoRepository.getStreamer(username)
         }
         _uiState.update { currentState ->
             currentState.copy(selectedStreamer = streamer.await())
         }
     }
 
-
+    /**
+     * function for setting the selected streamer to the special streamer(empty streamer)
+     */
     // Sets de selected streamer in state to the empty streamer (no information)
     fun clearStreamer() {
         _uiState.update { currentState ->
@@ -121,6 +139,10 @@ class StreamersViewModel(
         }
     }
 
+    /**
+     * Gets streamers information from the Streamers API Retrofit service
+     * and change the refresh count to trigger recomposition
+     */
     // Starts the real time monitoring of the live streamers and store in the view model
     private fun startRealTimeStreamerMonitor() = viewModelScope.launch {
         // Trigger the flow and consume its elements using collect
@@ -136,15 +158,12 @@ class StreamersViewModel(
             }
     }
 
+    /**
+     * Call getAllStreamers(), startRealTimeStreamerMonitor() on init so we can display the streamer with the live icon immediately.
+     */
     init {
-        //Log.d("StreamerViewModel", "Init")
         getAllStreamers()
         startRealTimeStreamerMonitor()
-    }
-
-    override fun onCleared() {
-        Log.d("HomeViewModel", "Cleared")
-        super.onCleared()
     }
 
 

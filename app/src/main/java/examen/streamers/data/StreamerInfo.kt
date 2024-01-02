@@ -3,6 +3,17 @@ package examen.streamers.data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+
+/**
+ * StreamerInfo with a username, avatar, twitchUrl, url, isCommunityStreamer.
+ *
+ * @property username the name of the streamer.
+ * @property avatar the profile picture of the streamer.
+ * @property twitchUrl the twitch url of the streamer.
+ * @property url the url of the streamer.
+ * @property isCommunityStreamer is the streamer a isCommunityStreamer.
+ * @constructor creates a streamer with a username, avatar, twitchUrl, url, isCommunityStreamer.
+ */
 @Entity(tableName = "streamers")
 data class StreamerInfo(
     @PrimaryKey//(autoGenerate = true)

@@ -12,9 +12,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,6 +25,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,7 +54,11 @@ object HomeDestination : NavigationDestination {
     override val titleRes = R.string.app_name
 }
 
-
+/**
+ * Entry route for Home screen
+ * Composable that displays a streamer app bar and a homebody.
+ *
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -93,6 +103,11 @@ fun HomeScreen(
 
 
 }
+
+/**
+ * Composable that displays the streamer list.
+ *
+ */
 @VisibleForTesting
 @Composable
 internal fun HomeBody(
@@ -116,6 +131,10 @@ internal fun HomeBody(
     }
     }
 
+/**
+ * Composable that displays a list of streamers.
+ *
+ */
 @Composable
 fun StreamerList(
     realTimeStreamerList: List<RealTimeStreamerInfo>,
@@ -129,7 +148,6 @@ fun StreamerList(
         val filteredListOne = streamerList.filter { liveUsernames.contains(it.username)}
         val filteredListTwo = streamerList.filter { !(liveUsernames.contains(it.username))}
         var sortedList = filteredListOne + filteredListTwo
-        //var sortedList = streamerList.sortedByDescending { it.isCommunityStreamer }
 
 
         val isEmptyList = sortedList.isEmpty()
@@ -139,9 +157,6 @@ fun StreamerList(
             else
                 listOf(SpecialStreamers.startStreamer)
         }
-        // If the list is not synchronised, load startscreen
-        /*if (!synchronized)
-                sortedList = listOf(SpecialStreamers.startStreamer)*/
 
 
         items(items = sortedList, key = { it.username }) { streamer ->
@@ -158,7 +173,12 @@ fun StreamerList(
 }
 
 
-
+/**
+ * Composable that displays a list item containing a streamer icon and teh streamer information.
+ *
+ * @param streamer contains the data that populates the list item
+ * @param modifier modifiers to set to this composable
+ */
 @Composable
 fun StreamerItem(
     streamer: StreamerInfo,
@@ -172,13 +192,11 @@ fun StreamerItem(
             isStreamerLive = it.isLive
         }
     }
+
     Card(
         modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
-            /*modifier = Modifier
-                .padding(dimensionResource(id = R.dimen.padding_large)),
-            horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))*/
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_small))
@@ -187,48 +205,11 @@ fun StreamerItem(
                 avatar = streamer.avatar,
                 modifier = Modifier
             )
-            /*AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(streamer?.avatar)
-                    .build(),
-                //model = streamer?.avatar,
-                contentDescription = "Photo of the streamer"
-            )*/
-            //Spacer(Modifier.weight(1f))
             StreamerInformation(
                 username = streamer.username,
                 isStreamerLive = isStreamerLive,
                 modifier = Modifier
             )
-            /*Text(
-                text = streamer.username,
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center,
-            )*/
-            //Spacer(Modifier.weight(1f))
-            /*Spacer(Modifier.weight(1f))
-            Text(
-                text = streamer.twitchUrl,
-                style = MaterialTheme.typography.titleMedium,
-                textAlign = TextAlign.Left
-            )
-            Spacer(Modifier.weight(1f))
-            Text(
-                text = isStreamerLive.toString(),
-                style = MaterialTheme.typography.titleMedium,
-                textAlign = TextAlign.Left
-                )
-            }*/
-            /*Image(
-                modifier = modifier
-                    .size(dimensionResource(R.dimen.image_size))
-                    .padding(dimensionResource(R.dimen.padding_small))
-                    .clip(MaterialTheme.shapes.small),
-                contentScale = ContentScale.Crop,
-                painter = painterResource(id = R.drawable.live),
-                contentDescription = stringResource(id = R.string.live_content_description)
-            )*/
-
         }
     }
 
@@ -237,7 +218,12 @@ fun StreamerItem(
 
 }
 
-
+/**
+ * Composable that displays the image in the list item.
+ *
+ * @param avatar contains the url for the image
+ * @param modifier modifiers to set to this composable
+ */
 @Composable
 fun StreamerIcon(
     avatar: String,
@@ -256,6 +242,12 @@ fun StreamerIcon(
     )
 }
 
+/**
+ * Composable that displays the username and the live icon in the list item.
+ *
+ * @param username contains the username of the streamer
+ * @param modifier modifiers to set to this composable
+ */
 @Composable
 fun StreamerInformation(
     username: String,
@@ -277,15 +269,20 @@ fun StreamerInformation(
                     .clip(MaterialTheme.shapes.small),
                 contentScale = ContentScale.Crop,
                 painter =
-                    painterResource(id = R.drawable.live),
+                painterResource(id = R.drawable.live),
                 contentDescription = stringResource(id = R.string.live_content_description),
             )
         } else {
             null
         }
 
+
     }
 }
+
+
+
+
 
 
 

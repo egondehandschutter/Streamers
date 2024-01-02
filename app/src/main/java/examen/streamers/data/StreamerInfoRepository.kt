@@ -18,7 +18,9 @@ interface StreamerInfoRepository {
     //fun getStreamerStream(id: String): Flow<StreamerInfo?>
     suspend fun getStreamer(username: String): StreamerInfo
 
-
+    /**
+     * Retrieve all the usernames of the streamers from the the given data source.
+     */
     // Retrieve the list of primary keys which are distinct by nature
     suspend fun getUsernames(): List<String>
 

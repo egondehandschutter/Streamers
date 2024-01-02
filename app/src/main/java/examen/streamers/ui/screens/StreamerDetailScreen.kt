@@ -45,6 +45,11 @@ object StreamerDetailsDestination : NavigationDestination {
     override val titleRes = R.string.streamer_detail_title
 }
 
+/**
+ * Entry route for streamer detail screen
+ * Composable that displays a streamer app bar and a streamers detail body.
+ *
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StreamerDetailsScreen(
@@ -75,6 +80,10 @@ fun StreamerDetailsScreen(
 
 }
 
+/**
+ * Composable that displays the streamer details and 2 buttons for the twitch url and the url.
+ *
+ */
 @Composable
 fun StreamerDetailsBody(appUiState: AppUiState, modifier: Modifier) {
     Column(
@@ -119,7 +128,10 @@ private fun toUrl(context: Context, url: String) {
     context.startActivity(browseIntent)
 }
 
-
+/**
+ * Composable that displays the streamer image and streamer details row.
+ *
+ */
 @Composable
 fun StreamerDetails(streamer: StreamerInfo, modifier: Modifier) {
     Card(
@@ -135,7 +147,6 @@ fun StreamerDetails(streamer: StreamerInfo, modifier: Modifier) {
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(streamer.avatar)
                     .build(),
-                //model = streamer?.avatar,
                 contentDescription = "Photo of the streamer"
 
             )
@@ -155,16 +166,6 @@ fun StreamerDetails(streamer: StreamerInfo, modifier: Modifier) {
                         )
                     )
                 )
-                /*StreamerDetailsRow(
-                    labelResID = R.string.twitchUrl,
-                    streamerDetail = streamer?.twitchUrl ?: "",
-                    modifier = Modifier.padding(
-                        horizontal = dimensionResource(
-                            id = R.dimen
-                                .padding_medium
-                        )
-                    )
-                )*/
                 if (streamer.username != SpecialStreamers.emptyStreamer.username) {
                     StreamerDetailsRow(
                         labelResID = R.string.isCommunityStreamer,
@@ -188,21 +189,15 @@ fun StreamerDetails(streamer: StreamerInfo, modifier: Modifier) {
                         )
                     )
                 }
-                /*StreamerDetailsRow(
-                    labelResID = R.string.url,
-                    streamerDetail = streamer?.url ?: "",
-                    modifier = Modifier.padding(
-                        horizontal = dimensionResource(
-                            id = R.dimen
-                                .padding_medium
-                        )
-                    )
-                )*/
             }
 
         }
     }
 
+/**
+ * Composable that the rows in the streamer details.
+ *
+ */
 @Composable
 private fun StreamerDetailsRow(
     @StringRes labelResID: Int, streamerDetail: String, modifier: Modifier = Modifier

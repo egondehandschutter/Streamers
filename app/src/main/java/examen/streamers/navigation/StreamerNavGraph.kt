@@ -17,10 +17,11 @@ import examen.streamers.ui.screens.StreamersViewModel
 /**
  * Provides Navigation graph for the application.
  * The application has a home, filter and streamer details screen
- * A bidirectional transition between home and filter screen is possible,
- * as well as a bidirectional transition between home and streamer details screen.
+ * a bidirectional transition between home and streamer details screen.
  * Click sounds are generated in the click callbacks provided
- *
+ * @property navController the nav host  controller.
+ * @property viewModel the streamers view model.
+ * @constructor creates the streamer nav host.
  */
 @Composable
 fun StreamerNavHost(

@@ -20,7 +20,9 @@ import examen.streamers.data.StreamerInfo
 import examen.streamers.navigation.StreamerNavHost
 import examen.streamers.ui.screens.StreamersViewModel
 
-
+/**
+ * Top level composable that represents screens for the application.
+ */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun StreamersApp(navController: NavHostController = rememberNavController()) {
