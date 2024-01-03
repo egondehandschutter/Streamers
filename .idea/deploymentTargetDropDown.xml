@@ -2,6 +2,12 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="StreamerInfoDaoTest">
+        <State />
+      </entry>
+      <entry key="StreamerScreenNavigationTest">
+        <State />
+      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>
@@ -17,15 +23,6 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2023-12-31T13:55:28.751100600Z" />
         </State>
-      </entry>
-      <entry key="homeScreen_verifyContent_noStreamers()">
-        <State />
-      </entry>
-      <entry key="streamerDetailsScreen_verifyContent_noStreamers()">
-        <State />
-      </entry>
-      <entry key="streamerDetailsScreen_verifyContent_streamerIsEmpty()">
-        <State />
       </entry>
     </value>
   </component>

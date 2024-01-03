@@ -3,14 +3,7 @@ package examen.streamers.ui.screens
 import android.annotation.SuppressLint
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.focusable
-import androidx.compose.foundation.hoverable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
-import androidx.compose.foundation.interaction.collectIsHoveredAsState
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,11 +22,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -74,6 +65,7 @@ fun HomeScreen(
     val appUiState by viewModel.appUiState.collectAsState()
 
     val synchronized = appUiState.synchronized
+    val realTimeSynchronized = appUiState.realTimeSynchronized
     val realTimeStreamer = viewModel.realTimeStreamerInfo
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -94,6 +86,7 @@ fun HomeScreen(
             streamerList = streamerUiState.streamerList,
             onItemClick = navigateToDetails,
             synchronized = synchronized,
+            realTimeSynchronized = realTimeSynchronized,
             modifier = modifier
                 .padding(innerPadding)
                 .fillMaxSize()
@@ -112,7 +105,8 @@ internal fun HomeBody(
     streamerList: List<StreamerInfo>,
     onItemClick: (String) -> Unit,
     synchronized: Boolean,
-    modifier: Modifier
+    realTimeSynchronized: Boolean,
+    modifier: Modifier = Modifier
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -123,6 +117,7 @@ internal fun HomeBody(
             streamerList = streamerList,
             onItemClick = { onItemClick(it.username) },
             synchronized = synchronized,
+            realTimeSynchronized = realTimeSynchronized,
             modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
         )
     }
@@ -138,12 +133,9 @@ fun StreamerList(
     streamerList: List<StreamerInfo>,
     onItemClick: (StreamerInfo) -> Unit,
     synchronized: Boolean,
-    modifier: Modifier
+    realTimeSynchronized: Boolean,
+    modifier: Modifier = Modifier
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val isHovered by interactionSource.collectIsHoveredAsState()
-    val isFocused by interactionSource.collectIsFocusedAsState()
     LazyColumn(modifier = modifier) {
         val liveUsernames = realTimeStreamerList.filter { it.isLive } .map { it.username }
         val filteredListOne = streamerList.filter { liveUsernames.contains(it.username)}
@@ -157,6 +149,11 @@ fun StreamerList(
             else
                 listOf(SpecialStreamers.startStreamer)
         }
+        else {
+            if (!realTimeSynchronized){
+                sortedList = listOf(SpecialStreamers.startStreamer)
+            }
+        }
 
         items(items = sortedList, key = { it.username }) { streamer ->
             StreamerItem(
@@ -165,8 +162,6 @@ fun StreamerList(
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
                     .clickable { onItemClick(streamer) }
-                    .hoverable(interactionSource = interactionSource)
-                    .focusable(interactionSource = interactionSource)
                     .testTag(stringResource(R.string.testTag))
             )
         }
@@ -183,7 +178,7 @@ fun StreamerList(
 fun StreamerItem(
     streamer: StreamerInfo,
     realTimeStreamerList: List<RealTimeStreamerInfo>,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     val username = streamer.username
     var isStreamerLive = false
@@ -252,7 +247,7 @@ fun StreamerIcon(
 fun StreamerInformation(
     username: String,
     isStreamerLive: Boolean,
-    modifier: Modifier
+    modifier: Modifier  = Modifier
 ) {
     Column(modifier = modifier) {
         Text(

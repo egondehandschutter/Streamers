@@ -1,7 +1,6 @@
 package examen.streamers
 
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertHasNoClickAction
 import androidx.compose.ui.test.assertIsDisplayed
@@ -16,7 +15,6 @@ import androidx.compose.ui.test.onNodeWithText
 import examen.streamers.data.RealTimeStreamerInfo
 import examen.streamers.data.SpecialStreamers
 import examen.streamers.data.StreamerInfo
-import examen.streamers.ui.screens.AppUiState
 import examen.streamers.ui.screens.HomeBody
 import examen.streamers.ui.screens.StreamerDetailsBody
 import org.junit.Rule
@@ -82,26 +80,6 @@ class StreamerAppScreenTest {
     // Declare list of streamers containing first and second streamer
     private val realTimeStreamersTwo = listOf(realTimeStreamerOne, realTimeStreamerTwo, realTimeStreamerThree)
 
-
-    // Declare first App Ui State with empty filters and first streamer selected
-    private val appUiStateOne = AppUiState(
-        selectedStreamer = streamerOne
-    )
-
-    // Declare second App Ui State with empty filters and "empty" streamer selected
-    private val appUiStateTwo = AppUiState(
-        selectedStreamer = SpecialStreamers.emptyStreamer
-    )
-
-    private val appUiStateThree = AppUiState(
-        selectedStreamer = streamerTwo
-    )
-
-    private val appUiStateFour = AppUiState(
-        selectedStreamer = SpecialStreamers.noStreamer
-    )
-
-
     @Test
     fun homeScreen_verifyContent_noLive() {
         // When HomeScreen is loaded
@@ -111,7 +89,7 @@ class StreamerAppScreenTest {
                 streamerList = streamers,
                 onItemClick = { },
                 synchronized = true,
-                Modifier
+                realTimeSynchronized = true
             )
         }
         // Check whether both streamers are in the scrollable list
@@ -137,7 +115,7 @@ class StreamerAppScreenTest {
                 streamerList = streamersTwo,
                 onItemClick = { },
                 synchronized = true,
-                Modifier
+                realTimeSynchronized = true
             )
         }
         // Check whether both streamers are in the scrollable list
@@ -178,7 +156,7 @@ class StreamerAppScreenTest {
                 streamerList = streamersEmpty,
                 onItemClick = { },
                 synchronized = true,
-                Modifier
+                realTimeSynchronized = true
             )
         }
         // Check whether both streamers are in the scrollable list
@@ -194,8 +172,7 @@ class StreamerAppScreenTest {
         // and the first streamer is selected
         composeTestRule.setContent {
             StreamerDetailsBody(
-                appUiState = appUiStateOne,
-                Modifier
+                streamer = streamerOne
             )
         }
         // Check if twitch url intent button is displayed, enabled and clickable
@@ -223,8 +200,7 @@ class StreamerAppScreenTest {
         // and the "empty" streamer is selected
         composeTestRule.setContent {
             StreamerDetailsBody(
-                appUiState = appUiStateTwo,
-                Modifier
+                streamer = SpecialStreamers.emptyStreamer
             )
         }
         // Check if twitchurl intent button is displayed
@@ -256,8 +232,7 @@ class StreamerAppScreenTest {
         // and the "empty" streamer is selected
         composeTestRule.setContent {
             StreamerDetailsBody(
-                appUiState = appUiStateFour,
-                Modifier
+                streamer = SpecialStreamers.noStreamer
             )
         }
         // Check if twitchurl intent button is displayed
@@ -289,8 +264,7 @@ class StreamerAppScreenTest {
         // and the first streamer is selected
         composeTestRule.setContent {
             StreamerDetailsBody(
-                appUiState = appUiStateThree,
-                Modifier
+                streamer = streamerTwo
             )
         }
         // Check if twitch url intent button is displayed, enabled and clickable

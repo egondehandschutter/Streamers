@@ -36,6 +36,7 @@ data class StreamerUiState(val streamerList: List<StreamerInfo> = listOf())
 data class AppUiState(
     val selectedStreamer: StreamerInfo = SpecialStreamers.noStreamer,
     val synchronized: Boolean = false, // true when online and offline data fully synchronized
+    val realTimeSynchronized: Boolean = false,
     val refreshCount: Long = 0
 )
 
@@ -148,12 +149,18 @@ class StreamersViewModel(
         streamersRepository.realTimeStreamer
             .catch { }
             .collect {
-                realTimeStreamerInfo = it.toList()
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        refreshCount = currentState.refreshCount + 1
-                    )
+                if (it.isNotEmpty()){
+                    realTimeStreamerInfo = it.toList()
+                     _uiState.update { currentState ->
+                         currentState.copy(
+                             refreshCount = currentState.refreshCount + 1
+                         )
+                     }
                 }
+                _uiState.update { currentState ->
+                    currentState.copy(realTimeSynchronized = true)
+                }
+
             }
     }
 
@@ -161,8 +168,8 @@ class StreamersViewModel(
      * Call getAllStreamers(), startRealTimeStreamerMonitor() on init so we can display the streamer with the live icon immediately.
      */
     init {
-        getAllStreamers()
         startRealTimeStreamerMonitor()
+        getAllStreamers()
     }
 
 

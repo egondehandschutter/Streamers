@@ -81,8 +81,16 @@ class NetworkStreamersRepository(
                 val realTimeStreamer = getRealTimeStreamerInfo()
                 emit(realTimeStreamer) // Emits the result of the request to the flow
             }
-            catch (_: IOException) {  }
-            catch (_: HttpException) {  }
+            catch (_: IOException) {
+                emit(listOf())
+                delay(100)
+                continue
+            }
+            catch (_: HttpException) {
+                emit(listOf())
+                delay(100)
+                continue
+            }
             catch (e: TestException) { break }
             delay(timeMillis = refreshIntervalMs) // Suspends the coroutine for some time
         }

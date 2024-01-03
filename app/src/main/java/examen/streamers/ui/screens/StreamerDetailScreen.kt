@@ -59,6 +59,7 @@ fun StreamerDetailsScreen(
 ) {
     val appUiState = viewModel.appUiState.collectAsState()
 
+    val streamer = appUiState.value.selectedStreamer
 
     Scaffold(
         topBar = {
@@ -70,7 +71,7 @@ fun StreamerDetailsScreen(
         }, modifier = modifier
     ) { innerPadding ->
         StreamerDetailsBody(
-            appUiState = appUiState.value,
+            streamer = streamer,
             modifier = Modifier
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
@@ -85,12 +86,11 @@ fun StreamerDetailsScreen(
  *
  */
 @Composable
-fun StreamerDetailsBody(appUiState: AppUiState, modifier: Modifier) {
+fun StreamerDetailsBody(streamer: StreamerInfo, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
-        val streamer = appUiState.selectedStreamer
         val view = LocalView.current
         val context = LocalContext.current
         StreamerDetails(
@@ -133,7 +133,7 @@ private fun toUrl(context: Context, url: String) {
  *
  */
 @Composable
-fun StreamerDetails(streamer: StreamerInfo, modifier: Modifier) {
+fun StreamerDetails(streamer: StreamerInfo, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier, colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
