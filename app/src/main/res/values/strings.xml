@@ -12,4 +12,5 @@
     <string name="isCommunityStreamer_content_description">Photo of the streamer</string>
     <string name="yes">"Yes"</string>
     <string name="no">"No"</string>
+    <string name="chess.com_logo_content_description">chess.com logo</string>
 </resources>

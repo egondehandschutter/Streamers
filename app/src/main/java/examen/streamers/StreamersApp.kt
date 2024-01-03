@@ -2,6 +2,10 @@ package examen.streamers
 
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -11,7 +15,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -30,7 +37,6 @@ fun StreamersApp(navController: NavHostController = rememberNavController()) {
     StreamerNavHost(navController = navController, viewModel = streamersViewModel )
 }
 
-
     /**
      * App bar to display title and conditionally display the back navigation.
      */
@@ -44,7 +50,22 @@ fun StreamersApp(navController: NavHostController = rememberNavController()) {
         navigateUp: () -> Unit = {}
     ) {
         CenterAlignedTopAppBar(
-            title = { Text(title) },
+            title = {
+                Row(
+                verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .size(dimensionResource(R.dimen.image_size))
+                            .padding(dimensionResource(R.dimen.padding_small)),
+                        painter = painterResource(R.drawable.chesscom_pawn),
+                        contentDescription = stringResource(R.string.chess_com_logo_content_description)
+                )
+                Text(
+                    text = title
+                )
+            }
+    },
             modifier = modifier,
             scrollBehavior = scrollBehavior,
             navigationIcon = {
@@ -57,22 +78,6 @@ fun StreamersApp(navController: NavHostController = rememberNavController()) {
                     }
                 }
             }
-        )}
-
-/*@ExperimentalMaterial3Api
-@Composable
-fun SearchBar(
-    query: String,
-    onQueryChange: (String) -> Unit,
-    onSearch: (String) -> Unit,
-    active: Boolean,
-    onActiveChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    placeholder: @Composable (() -> Unit)? = null,
-    leadingIcon: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = null,
-    content: List<StreamerInfo>,
-) {
-}*/
+        )
+    }
 
