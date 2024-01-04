@@ -9,6 +9,9 @@ import android.content.Context
 
 /**
  * Dependency Injection container at the application level.
+ *
+ * @property streamersRepository the name of the online repository.
+ * @property streamerInfoRepository the name of the offline repository.
  */
 interface AppContainer {
     val streamersRepository: StreamersRepository

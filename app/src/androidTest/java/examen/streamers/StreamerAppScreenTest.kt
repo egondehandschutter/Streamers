@@ -20,6 +20,7 @@ import examen.streamers.ui.screens.StreamerDetailsBody
 import org.junit.Rule
 import org.junit.Test
 
+@Suppress("SpellCheckingInspection")
 class StreamerAppScreenTest {
 
     @get:Rule
@@ -43,6 +44,7 @@ class StreamerAppScreenTest {
         isCommunityStreamer = false
     )
 
+    // Declaration of third streamer
     private val streamerThree = StreamerInfo(
         username = "ChessBrah",
         avatar = "https://images.chesscomfiles.com/uploads/v1/user/2555939.974bf39b.50x50o.c90724e0b767.png",
@@ -52,41 +54,55 @@ class StreamerAppScreenTest {
     )
 
     private val realTimeStreamerOne = RealTimeStreamerInfo(
-        username = "chess24",
+        username = streamerOne.username,
         isLive = false
     )
 
     private val realTimeStreamerTwo = RealTimeStreamerInfo(
-        username = "DanielNaroditsky",
+        username = streamerTwo.username,
         isLive = false
     )
 
     private val realTimeStreamerThree = RealTimeStreamerInfo(
-        username = "ChessBrah",
+        username = streamerThree.username,
         isLive = true
     )
 
     // Declare list of streamers containing first and second streamer
-    private val streamers = listOf(streamerOne, streamerTwo)
+    private val streamersOne = listOf(streamerOne, streamerTwo)
 
-    // Declare list of streamers containing first and second streamer
-    private val realTimeStreamers = listOf(realTimeStreamerOne, realTimeStreamerTwo)
+    // Declare list of real time streamers containing first
+    // and second real time streamer
+    private val realTimeStreamersOne = listOf(
+        realTimeStreamerOne,
+        realTimeStreamerTwo
+    )
 
-    // Declare list of streamers containing first and second streamer
-    private val streamersTwo = listOf(streamerOne, streamerTwo, streamerThree)
+    // Declare list of streamers containing first,
+    // second and third streamer
+    private val streamersTwo = listOf(
+        streamerOne,
+        streamerTwo,
+        streamerThree
+    )
 
     private val streamersEmpty : List<StreamerInfo> = emptyList()
 
-    // Declare list of streamers containing first and second streamer
-    private val realTimeStreamersTwo = listOf(realTimeStreamerOne, realTimeStreamerTwo, realTimeStreamerThree)
+    // Declare list of real time streamers containing first, second
+    // and third real time streamer
+    private val realTimeStreamersTwo = listOf(
+        realTimeStreamerOne,
+        realTimeStreamerTwo,
+        realTimeStreamerThree
+    )
 
     @Test
-    fun homeScreen_verifyContent_noLive() {
+    fun homeScreen_verifyContent_noLiveStreamers() {
         // When HomeScreen is loaded
         composeTestRule.setContent {
             HomeBody(
-                realTimeStreamerList = realTimeStreamers,
-                streamerList = streamers,
+                realTimeStreamerList = realTimeStreamersOne,
+                streamerList = streamersOne,
                 onItemClick = { },
                 synchronized = true,
                 realTimeSynchronized = true
@@ -107,7 +123,7 @@ class StreamerAppScreenTest {
     }
 
     @Test
-    fun homeScreen_verifyContent_oneLive() {
+    fun homeScreen_verifyContent_oneLiveStreamer() {
         // When HomeScreen is loaded
         composeTestRule.setContent {
             HomeBody(
@@ -118,7 +134,7 @@ class StreamerAppScreenTest {
                 realTimeSynchronized = true
             )
         }
-        // Check whether both streamers are in the scrollable list
+        // Check whether the streamers are in the scrollable list
         // and are clickable
         composeTestRule.onNodeWithText(streamerThree.username)
             .assertIsDisplayed()
@@ -136,32 +152,66 @@ class StreamerAppScreenTest {
 
         val testTag = composeTestRule.activity.getString(R.string.testTag)
 
-        composeTestRule.waitUntil(timeoutMillis = 15000)  {
-            composeTestRule.onAllNodesWithTag(testTag = testTag)
-                .fetchSemanticsNodes().isNotEmpty()
-        }
-
-        // Click on first streamer in scrollable list
+        // Check if the first streamer in the scrollable list
+        // is the live streamer
         composeTestRule.onAllNodesWithTag(testTag = testTag)
             .onFirst()
             .assertTextEquals(streamerThree.username)
     }
 
     @Test
-    fun homeScreen_verifyContent_noStreamers() {
+    fun homeScreen_verifyContent_noStreamers() { //error path
         // When HomeScreen is loaded
         composeTestRule.setContent {
             HomeBody(
-                realTimeStreamerList = realTimeStreamers,
+                realTimeStreamerList = realTimeStreamersOne,
                 streamerList = streamersEmpty,
                 onItemClick = { },
                 synchronized = true,
                 realTimeSynchronized = true
             )
         }
-        // Check whether both streamers are in the scrollable list
-        // and are clickable
+        // Check if the scrolllable list shows the no streamers found message
+        // which is clickable
         composeTestRule.onNodeWithText(SpecialStreamers.noStreamer.username)
+            .assertIsDisplayed()
+            .assertHasClickAction()
+    }
+
+    @Test
+    fun homeScreen_verifyContent_startStreamers_synchronizedFalse_realTimeSynchronizedFalse() {
+        // When HomeScreen is loaded
+        composeTestRule.setContent {
+            HomeBody(
+                realTimeStreamerList = realTimeStreamersOne,
+                streamerList = streamersOne,
+                onItemClick = { },
+                synchronized = false,
+                realTimeSynchronized = false
+            )
+        }
+        // Check if the scrolllable list shows the please wait message
+        // which is clickable
+        composeTestRule.onNodeWithText(SpecialStreamers.startStreamer.username)
+            .assertIsDisplayed()
+            .assertHasClickAction()
+    }
+
+    @Test
+    fun homeScreen_verifyContent_startStreamers_synchronizedTrue_realTimeSynchronizedFalse() {
+        // When HomeScreen is loaded
+        composeTestRule.setContent {
+            HomeBody(
+                realTimeStreamerList = realTimeStreamersOne,
+                streamerList = streamersTwo,
+                onItemClick = { },
+                synchronized = true,
+                realTimeSynchronized = false
+            )
+        }
+        // Check if the scrolllable list shows the please wait message
+        // which is clickable
+        composeTestRule.onNodeWithText(SpecialStreamers.startStreamer.username)
             .assertIsDisplayed()
             .assertHasClickAction()
     }
@@ -203,39 +253,7 @@ class StreamerAppScreenTest {
                 streamer = SpecialStreamers.emptyStreamer
             )
         }
-        // Check if twitchurl intent button is displayed
-        // but not enabled
-        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.toTwitchUrl))
-            .assertIsDisplayed()
-            .assertIsNotEnabled()
-
-        // Check if url intent button is displayed
-        // but not enabled
-        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.toTwitchUrl))
-            .assertIsDisplayed()
-            .assertIsNotEnabled()
-
-
-        // Check if empty streamer details are displayed
-        // and cannot be clicked
-        composeTestRule.onNodeWithText(
-            text = composeTestRule.activity.getString(R.string.isCommunityStreamer),
-            substring = true
-        )
-            .assertIsDisplayed()
-            .assertHasNoClickAction()
-    }
-
-    @Test
-    fun streamerDetailsScreen_verifyContent_noStreamers() {   //error path
-        // When StreamerDetailsScreen is loaded
-        // and the "empty" streamer is selected
-        composeTestRule.setContent {
-            StreamerDetailsBody(
-                streamer = SpecialStreamers.noStreamer
-            )
-        }
-        // Check if twitchurl intent button is displayed
+        // Check if twitch url intent button is displayed
         // but not enabled
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.toTwitchUrl))
             .assertIsDisplayed()
@@ -261,17 +279,17 @@ class StreamerAppScreenTest {
     @Test
     fun streamerDetailsScreen_verifyContent_streamerExists_withoutTwitchUrl() {
         // When StreamerDetailsScreen is loaded
-        // and the first streamer is selected
+        // and the second streamer is selected
         composeTestRule.setContent {
             StreamerDetailsBody(
                 streamer = streamerTwo
             )
         }
-        // Check if twitch url intent button is displayed, enabled and clickable
+        // Check if twitch url intent button is displayed,
+        // and not enabled
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.toTwitchUrl))
             .assertIsDisplayed()
             .assertIsNotEnabled()
-            .assertHasClickAction()
 
         // Check if url intent button is displayed, enabled and clickable
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.toUrl))
@@ -279,7 +297,7 @@ class StreamerAppScreenTest {
             .assertIsEnabled()
             .assertHasClickAction()
 
-        // Check if the details of the first streamer are displayed
+        // Check if the details of the second streamer are displayed
         // but cannot be clicked
         composeTestRule.onNodeWithText(streamerTwo.username)
             .assertIsDisplayed()

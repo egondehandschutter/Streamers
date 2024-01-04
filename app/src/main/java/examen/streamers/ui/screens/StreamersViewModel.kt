@@ -12,7 +12,6 @@ import examen.streamers.data.SpecialStreamers
 import examen.streamers.data.StreamerInfo
 import examen.streamers.data.StreamerInfoRepository
 import examen.streamers.data.StreamersRepository
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -119,11 +118,9 @@ class StreamersViewModel(
      * @param username username of the streamer
      */
     fun selectStreamer(username: String) = viewModelScope.launch {
-        val streamer = async {
-            streamerInfoRepository.getStreamer(username)
-        }
+        val streamer = streamerInfoRepository.getStreamer(username)
         _uiState.update { currentState ->
-            currentState.copy(selectedStreamer = streamer.await())
+            currentState.copy(selectedStreamer = streamer)
         }
     }
 
@@ -160,18 +157,18 @@ class StreamersViewModel(
                 _uiState.update { currentState ->
                     currentState.copy(realTimeSynchronized = true)
                 }
-
             }
     }
 
     /**
-     * Call getAllStreamers(), startRealTimeStreamerMonitor() on init so we can display the streamer with the live icon immediately.
+     * Call getAllStreamers(), startRealTimeStreamerMonitor() on init
+     * so we can display the streamer with the live icon immediately.
+     * Both run asynchronous using coroutines
      */
     init {
         startRealTimeStreamerMonitor()
         getAllStreamers()
     }
-
 
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L

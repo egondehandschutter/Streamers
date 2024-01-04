@@ -24,10 +24,12 @@ class StreamersViewModelTest {
 
     @Test
     fun streamersViewModel_getAllStreamers_verifyViewModelInitSuccess() = runTest {
-        // Both fake repositories are build by using the real repositories and injecting them
-        // with fake dao en fake api service respectively
+        // Fake offline repository is build by using the real repository and injecting it
+        // with fake dao
         val streamersViewModel = StreamersViewModel(
-            streamerInfoRepository = OfflineStreamerInfoRepository(streamerInfoDao = FakeStreamerInfoDao()),
+            streamerInfoRepository = OfflineStreamerInfoRepository(
+                streamerInfoDao = FakeStreamerInfoDao()
+            ),
             streamersRepository = FakeNetworkStreamersRepository(
                 streamerApiService = FakeStreamerApiService(),
             )
@@ -69,10 +71,12 @@ class StreamersViewModelTest {
 
     @Test
     fun streamersViewModel_selectStreamer_verifyAppUiState() = runTest {
-        // Both fake repositories are build by using the real repositories and injecting them
-        // with fake dao en fake api service respectively
+        // Fake offline repository is build by using the real repository and injecting it
+        // with fake dao
         val streamersViewModel = StreamersViewModel(
-            streamerInfoRepository = OfflineStreamerInfoRepository(streamerInfoDao = FakeStreamerInfoDao()),
+            streamerInfoRepository = OfflineStreamerInfoRepository(
+                streamerInfoDao = FakeStreamerInfoDao()
+            ),
             streamersRepository = FakeNetworkStreamersRepository(
                 streamerApiService = FakeStreamerApiService(),
             )
@@ -95,8 +99,12 @@ class StreamersViewModelTest {
 
     @Test
     fun streamersViewModel_clearStreamer_verifyAppUiState() = runTest {
+        // Fake offline repository is build by using the real repository and injecting it
+        // with fake dao
         val streamersViewModel = StreamersViewModel(
-            streamerInfoRepository = OfflineStreamerInfoRepository(streamerInfoDao = FakeStreamerInfoDao()),
+            streamerInfoRepository = OfflineStreamerInfoRepository(
+                streamerInfoDao = FakeStreamerInfoDao()
+            ),
             streamersRepository = FakeNetworkStreamersRepository(
                 streamerApiService = FakeStreamerApiService(),
             )

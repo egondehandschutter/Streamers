@@ -15,18 +15,17 @@ import java.io.IOException
 interface StreamersRepository {
     /** Fetches streamer from StreamerApi */
     suspend fun getStreamers(): Streamers
-    /** Fetches streamer from Room database which is synchronized with StreamerApi */
+    /** Maps Api data to persistent data */
     suspend fun getStreamersInfo(): List<StreamerInfo>
-    /** Fetches real time streamers spots from RealTimeStreamerApi */
+    /** Maps Api data to non persistent real time data*/
     suspend fun getRealTimeStreamerInfo(): List<RealTimeStreamerInfo>
-    /** list with the RealTimeStreamerInfo */
-    /* Flow that emits the real time parking info on a regul    ar (60 s) basis*/
+    /** Flow with list with the RealTimeStreamerInfo, uses ApiService */
+    /* Flow that emits the real time parking info on a regular (60 s) basis*/
     val realTimeStreamer: Flow<List<RealTimeStreamerInfo>>
 }
 
-// Interval for refreshing real time parking information
+// Interval for refreshing real time streamer information
 private const val refreshIntervalMs: Long = 60000
-
 
 // Custom exception used to cancel the flow in unit test
 class TestException(message: String) : Exception(message)
@@ -39,7 +38,6 @@ class NetworkStreamersRepository(
 ) : StreamersRepository {
     private val apiEndpoint = "streamers"
 
-
     /** Fetches streamer from StreamerApi according to apiEndpoint*/
     override suspend fun getStreamers(): Streamers = streamerApiService.getStreamers(apiEndpoint)
 
@@ -48,16 +46,14 @@ class NetworkStreamersRepository(
         val result = getStreamers().streamers
         val streamersInfo = result.map {
             StreamerInfo(
-                //id = 0,
                 avatar = it.avatar,
                 isCommunityStreamer = it.isCommunityStreamer,
                 twitchUrl = it.twitchUrl ?: "",
                 url = it.url,
                 username = it.username
             )
-
-    }
-    return streamersInfo
+        }
+        return streamersInfo
     }
 
     /** Fetches real time streamers from RealTimeStreamerApi
@@ -69,12 +65,11 @@ class NetworkStreamersRepository(
                 username = it.username,
                 isLive = it.isLive
             )
-
         }
         return realTimeStreamerInfo
     }
 
-    // Actually build the flow for emiting the real time streamer information
+    // Actually build the flow for emitting the real time streamer information
     override val realTimeStreamer: Flow<List<RealTimeStreamerInfo>> = flow {
         while (true) {
             try {
@@ -95,5 +90,4 @@ class NetworkStreamersRepository(
             delay(timeMillis = refreshIntervalMs) // Suspends the coroutine for some time
         }
     }
-
 }

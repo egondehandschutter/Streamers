@@ -15,5 +15,4 @@ interface StreamerApiService {
      */
     @GET("{apiEndpoint}")
     suspend fun getStreamers(@Path("apiEndpoint")apiEndpoint :String): Streamers
-
 }

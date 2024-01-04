@@ -169,7 +169,7 @@ fun StreamerList(
 }
 
 /**
- * Composable that displays a list item containing a streamer icon and teh streamer information.
+ * Composable that displays a list item containing a streamer icon and the streamer information.
  *
  * @param streamer contains the data that populates the list item
  * @param modifier modifiers to set to this composable
@@ -233,7 +233,7 @@ fun StreamerIcon(
         model = ImageRequest.Builder(LocalContext.current)
             .data(avatar)
             .build(),
-        contentDescription = "Photo of the streamer"
+        contentDescription = stringResource(R.string.avatar_content_description)
     )
 }
 

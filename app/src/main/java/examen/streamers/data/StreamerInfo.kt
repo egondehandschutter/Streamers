@@ -23,12 +23,16 @@ data class StreamerInfo(
     val isCommunityStreamer: Boolean,
     val twitchUrl: String,
     val url: String
-
 )
 
+
+/**
+ * object with special streamers used in weird circumstances.
+ */
 // Declaration of the "special" streamers used in the application
 object SpecialStreamers {
-    // when there are no streamers to display
+
+    // When clicked on no steamers found/ please wait in home screen
     val emptyStreamer = StreamerInfo(
         username = "",
         avatar = "",
@@ -46,6 +50,7 @@ object SpecialStreamers {
         url = ""
     )
 
+    // when there are no streamers to display
     val noStreamer = StreamerInfo(
         username = "No streamers found ...",
         avatar = "",
@@ -53,7 +58,6 @@ object SpecialStreamers {
         twitchUrl = "",
         url = ""
     )
-
 }
 
 

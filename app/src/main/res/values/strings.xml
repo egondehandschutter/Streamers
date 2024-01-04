@@ -9,8 +9,8 @@
     <string name="toUrl">Go to chess.com</string>
     <string name="live_content_description">live icon</string>
     <string name="testTag">Test tag</string>
-    <string name="isCommunityStreamer_content_description">Photo of the streamer</string>
     <string name="yes">"Yes"</string>
     <string name="no">"No"</string>
     <string name="chess.com_logo_content_description">chess.com logo</string>
+    <string name="avatar_content_description">Photo of the streamer</string>
 </resources>

@@ -58,7 +58,6 @@ fun StreamerDetailsScreen(
     viewModel: StreamersViewModel
 ) {
     val appUiState = viewModel.appUiState.collectAsState()
-
     val streamer = appUiState.value.selectedStreamer
 
     Scaffold(
@@ -77,8 +76,6 @@ fun StreamerDetailsScreen(
                 .verticalScroll(rememberScrollState())
         )
     }
-
-
 }
 
 /**
@@ -119,7 +116,6 @@ fun StreamerDetailsBody(streamer: StreamerInfo, modifier: Modifier = Modifier) {
             Text(stringResource(R.string.toUrl))
         }
     }
-
 }
 
 private fun toUrl(context: Context, url: String) {
@@ -147,7 +143,7 @@ fun StreamerDetails(streamer: StreamerInfo, modifier: Modifier = Modifier) {
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(streamer.avatar)
                     .build(),
-                contentDescription = stringResource(R.string.isCommunityStreamer_content_description)
+                contentDescription = stringResource(R.string.avatar_content_description)
 
             )
             Column(
@@ -194,7 +190,6 @@ fun StreamerDetails(streamer: StreamerInfo, modifier: Modifier = Modifier) {
                     )
                 }
             }
-
         }
     }
 
