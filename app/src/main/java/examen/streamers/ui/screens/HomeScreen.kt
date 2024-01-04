@@ -33,6 +33,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -42,6 +43,7 @@ import examen.streamers.data.RealTimeStreamerInfo
 import examen.streamers.data.SpecialStreamers
 import examen.streamers.data.StreamerInfo
 import examen.streamers.navigation.NavigationDestination
+import examen.streamers.ui.theme.StreamersTheme
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
@@ -271,13 +273,43 @@ fun StreamerInformation(
     }
 }
 
-
-
-
-
-
-
-
+@Preview(showBackground = true)
+@Composable
+fun HomeBodyPreview() {
+    StreamersTheme {
+        HomeBody(
+            listOf(
+                RealTimeStreamerInfo(
+                    username = "chess24",
+                    isLive = false
+                ),
+                RealTimeStreamerInfo(
+                    username = "ChessBrah",
+                    isLive = true
+                )
+            ),
+            listOf(
+                StreamerInfo(
+                    username = "chess24",
+                    avatar = "https://images.chesscomfiles.com/uploads/v1/user/302880433.dc8aca73.50x50o.5dafc7607ff6.png",
+                    twitchUrl = "https://twitch.tv/chess24",
+                    url = "https://www.chess.com/member/Chess24",
+                    isCommunityStreamer = false
+                ),
+                StreamerInfo(
+                    username = "ChessBrah",
+                    avatar = "https://images.chesscomfiles.com/uploads/v1/user/2555939.974bf39b.50x50o.c90724e0b767.png",
+                    twitchUrl = "https://twitch.tv/chessbrah",
+                    url = "https://www.chess.com/member/ChessBrah",
+                    isCommunityStreamer = true
+                )
+            ),
+            onItemClick = {},
+            synchronized = true,
+            realTimeSynchronized = true
+        )
+    }
+}
 
 
 

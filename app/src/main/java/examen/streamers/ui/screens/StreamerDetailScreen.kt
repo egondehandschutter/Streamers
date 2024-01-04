@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -38,6 +39,7 @@ import examen.streamers.StreamersTopAppBar
 import examen.streamers.data.SpecialStreamers
 import examen.streamers.data.StreamerInfo
 import examen.streamers.navigation.NavigationDestination
+import examen.streamers.ui.theme.StreamersTheme
 
 
 object StreamerDetailsDestination : NavigationDestination {
@@ -205,6 +207,20 @@ private fun StreamerDetailsRow(
         Text(text = "${stringResource(labelResID)}:")
         Spacer(modifier = Modifier.weight(1f))
         Text(text = streamerDetail, fontWeight = FontWeight.Bold)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun StreamerDetailsScreenPreview() {
+    StreamersTheme {
+        StreamerDetailsBody(StreamerInfo(
+            username = "ChessBrah",
+            avatar = "https://images.chesscomfiles.com/uploads/v1/user/2555939.974bf39b.50x50o.c90724e0b767.png",
+            twitchUrl = "https://twitch.tv/chessbrah",
+            url = "https://www.chess.com/member/ChessBrah",
+            isCommunityStreamer = true
+        ))
     }
 }
 
