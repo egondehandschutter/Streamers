@@ -7,10 +7,4 @@ The twitch.tv intent will not be enabled when the streamer does not have a twitc
 The app serves it purpose when a user wants to watch a chess stream and needs to know who is online. This can be to discover a new chess streamer or
 to see that their favourite chess streamer is online.
 
-Used criteria
-------------
-- a network connection built with Retrofit
-- 
-
---------------
 
