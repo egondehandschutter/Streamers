@@ -3,6 +3,7 @@ package examen.streamers.fake
 import examen.streamers.model.Streamer
 import examen.streamers.model.Streamers
 
+//FakeDataSource with 2 streamers
 object FakeDataSource {
     private val resultOne = Streamer(
         username = "Streamer 1",

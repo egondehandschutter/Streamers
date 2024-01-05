@@ -212,6 +212,7 @@ private fun StreamerDetailsRow(
 
 @Preview(showBackground = true)
 @Composable
+@Suppress("SpellCheckingInspection")
 fun StreamerDetailsScreenPreview() {
     StreamersTheme {
         StreamerDetailsBody(StreamerInfo(

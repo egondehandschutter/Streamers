@@ -1,5 +1,8 @@
 package examen.streamers.navigation
 
+/**
+ * navigation destination with a unique route and a title
+ */
 interface NavigationDestination {
     /**
      * Unique name to define the path for a composable

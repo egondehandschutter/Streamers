@@ -275,6 +275,7 @@ fun StreamerInformation(
 
 @Preview(showBackground = true)
 @Composable
+@Suppress("SpellCheckingInspection")
 fun HomeBodyPreview() {
     StreamersTheme {
         HomeBody(

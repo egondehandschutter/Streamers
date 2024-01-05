@@ -53,16 +53,19 @@ class StreamerAppScreenTest {
         isCommunityStreamer = true
     )
 
+    // Declare first real time streamer
     private val realTimeStreamerOne = RealTimeStreamerInfo(
         username = streamerOne.username,
         isLive = false
     )
 
+    // Declaration of second real time streamer
     private val realTimeStreamerTwo = RealTimeStreamerInfo(
         username = streamerTwo.username,
         isLive = false
     )
 
+    // Declaration of third real time streamer
     private val realTimeStreamerThree = RealTimeStreamerInfo(
         username = streamerThree.username,
         isLive = true
@@ -86,6 +89,7 @@ class StreamerAppScreenTest {
         streamerThree
     )
 
+    // Declare empty list (with streamerInfo)
     private val streamersEmpty : List<StreamerInfo> = emptyList()
 
     // Declare list of real time streamers containing first, second

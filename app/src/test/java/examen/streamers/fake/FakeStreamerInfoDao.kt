@@ -5,6 +5,7 @@ import examen.streamers.data.StreamerInfoDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
+// fake dao with streamers from fake data source
 class FakeStreamerInfoDao: StreamerInfoDao{
     private val streamerInfoList = FakeDataSource.streamers.streamers.map {
         StreamerInfo(

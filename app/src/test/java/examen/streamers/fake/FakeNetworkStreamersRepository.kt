@@ -7,8 +7,7 @@ import examen.streamers.model.Streamers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-
-
+//Fake network repository using the fake api service
 class FakeNetworkStreamersRepository (
     private val streamerApiService : FakeStreamerApiService
     )  : StreamersRepository {

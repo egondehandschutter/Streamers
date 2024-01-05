@@ -8,6 +8,8 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 class NetworkStreamersRepositoryTest {
+
+    //testing if the streamers from the network repository are the ones in the fake data source
     @Test
     fun networkStreamerRepository_getStreamers_verifyStreamers() =
         runTest {

@@ -1,6 +1,5 @@
 package examen.streamers.ui.screens
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -103,7 +102,7 @@ class StreamersViewModel(
             // Remove streamers corresponding to remaining usernames in usernames set
             usernames.forEach {
                 streamerInfoRepository.deleteStreamer(streamerInfoRepository.getStreamer(it))
-                Log.d("StreamersViewModel", "Streamer with username $it removed from DB")
+                //Log.d("StreamersViewModel", "Streamer with username $it removed from DB")
             }
         } else {
             retrofitSuccessful = false

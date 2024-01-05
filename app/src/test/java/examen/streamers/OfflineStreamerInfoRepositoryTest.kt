@@ -10,6 +10,9 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 class OfflineStreamerInfoRepositoryTest {
+
+    //testing if the streamer info from the offline repository
+    // are the streamers in the fake data source mapped to streamer info
     @Test
     fun offlineStreamerInfoRepository_getAllStreamersStream_verifyStreamerStream() =
         runTest {
@@ -32,6 +35,8 @@ class OfflineStreamerInfoRepositoryTest {
             )
         }
 
+    //testing if the function getStreamer in the repository works
+    //to get the correct selected streamer
     @Test
     fun offlineStreamerInfoRepository_getStreamer_verifyStreamer() =
         runTest {
@@ -57,6 +62,8 @@ class OfflineStreamerInfoRepositoryTest {
         }
 
 
+    //testing if the function getUsernames in the repository works
+    //to get the correct usernames
     @Test
     fun offlineStreamerInfoRepository_getUsernames_verifyUsernames() =
         runTest {
