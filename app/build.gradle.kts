@@ -90,4 +90,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.9.10")
+}
+
+tasks.dokkaHtml.configure {
+    outputDirectory.set(rootDir.resolve("docs"))
 }
